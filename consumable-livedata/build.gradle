@@ -7,18 +7,18 @@ apply plugin: 'com.github.dcendents.android-maven'
 ext {
 
     bintrayRepo = 'Mobble'
-    bintrayName = 'ConsumableLiveData'
+    bintrayName = 'consumable-livedata'
 
     publishedGroupId = 'ru.sarmatin.mobble'
-    libraryName = 'consumablelivedata'
-    artifact = 'ConsumableLiveData'
+    libraryName = 'consumable-livedata'
+    artifact = 'consumable-livedata'
 
     libraryDescription = 'Consumable LiveData class with ConsumableValue and ConsumableObserver'
 
     siteUrl = 'https://github.com/antonsarmatin/Mobble'
     gitUrl = 'https://github.com/antonsarmatin/Mobble.git'
 
-    libraryVersion = '1.1.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'antonsarmatin'
     developerName = 'Anton Sarmatin'

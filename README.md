@@ -4,19 +4,24 @@ Mobble framework - CleanArch, Navigation detached form UI, MVVM like Presentatio
 
 ## Mobble framework has the following libraries:
 
-1.	Consumable LiveData
+1. Mobble:Utils
+2. Mobble:MV
+3. Mobble:Nav
+4. Mobble:Clean
 
 ## Plans for the future
 
 This framework is under construction!
 
 - [x] Create
-- [x] Consumable LiveData
-- [ ] Event like LiveData
+- [x] Mobble:Utils - Consumable LiveData
 - [ ] ...
-- [ ] MVVM like UI layer pattern with Events and States(based on Android MVVM)
-- [ ] Detached navigation based on MV State 
-- [ ] CleanArchitecture library for fast implementation in new project
+- [ ] Mobble:Utils - Small but useful utils
+- [ ] Mobble:MV - MVVM like UI layer pattern with Events and States(based on Android MVVM)
+- [ ] Mobble:Nav - Detached navigation based on MV State
+- [ ] Mobble:Clean - CleanArchitecture library for fast implementation in new project
+
+# Mobble:Utils
 
 ## ConsumableLiveData
 
@@ -34,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.sarmatin.mobble:ConsumableLiveData:1.1.0'
+    implementation 'ru.sarmatin.mobble:consumable-livedata:1.0.1'
 }
 ```
 
