@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph_main.xml"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="ru.sarmatin.mobble.MainFragment"
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_consumableParentFragment"
+            app:destination="@id/consumableParentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/consumableParentFragment"
+        android:name="ru.sarmatin.mobble.ui.consumable.ConsumableParentFragment"
+        android:label="ConsumableParentFragment" >
+        <action
+            android:id="@+id/action_consumableParentFragment_to_consumableChildFragment"
+            app:destination="@id/consumableChildFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/consumableChildFragment"
+        android:name="ru.sarmatin.mobble.ui.consumable.ConsumableChildFragment"
+        android:label="ConsumableChildFragment" />
+
+
+</navigation>
