@@ -17,6 +17,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <!-- Buttons here -->
+        <Button
+            android:id="@+id/btnConsumable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_text_consumable"/>
 
     </LinearLayout>
 

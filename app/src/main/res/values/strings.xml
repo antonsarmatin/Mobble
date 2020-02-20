@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Mobble</string>
+    <string name="btn_text_consumable">Consumable Input</string>
 </resources>
