@@ -7,18 +7,18 @@ apply plugin: 'com.github.dcendents.android-maven'
 ext {
 
     bintrayRepo = 'Mobble'
-    bintrayName = 'consumable-livedata'
+    bintrayName = 'utils'
 
     publishedGroupId = 'ru.sarmatin.mobble'
-    libraryName = 'consumable-livedata'
-    artifact = 'consumable-livedata'
+    libraryName = 'utils'
+    artifact = 'utils'
 
-    libraryDescription = 'Consumable LiveData class with ConsumableValue and ConsumableObserver'
+    libraryDescription = 'Utils library for Android Development in UI Layer'
 
     siteUrl = 'https://github.com/antonsarmatin/Mobble'
     gitUrl = 'https://github.com/antonsarmatin/Mobble.git'
 
-    libraryVersion = '1.0.1'
+    libraryVersion = '1.0.0'
 
     developerId = 'antonsarmatin'
     developerName = 'Anton Sarmatin'
@@ -28,16 +28,15 @@ ext {
     licenseUrl = 'https://opensource.org/licenses/mit-license.php'
     allLicenses = ['MIT']
 
-
 }
-
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
+
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 15
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -56,6 +55,9 @@ android {
 }
 
 dependencies {
+    api project(':consumable-livedata')
+
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -63,6 +65,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+
 }
 
 if (project.rootProject.file('local.properties').exists()) {
