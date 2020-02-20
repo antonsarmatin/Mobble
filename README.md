@@ -15,6 +15,7 @@ This framework is under construction!
 
 - [x] Create
 - [x] Mobble:Utils - Consumable LiveData
+- [x] Mobble:Utils - Event LiveData
 - [ ] ...
 - [ ] Mobble:Utils - Small but useful utils
 - [ ] Mobble:MV - MVVM like UI layer pattern with Events and States(based on Android MVVM)
@@ -23,15 +24,9 @@ This framework is under construction!
 
 # Mobble:Utils
 
-## ConsumableLiveData
-
-LiveData class that wrapping ConsumableValue and uses ConsumableObserver. 
-Allows build consumable data with LiveData class. 
-Example: use it in SharedViewModels
-
 ### Add to your project
 
-To start using this library, add these lines to the build.gradle of your project:
+To start using this part, add these lines to the build.gradle of your project:
 
 ```xml
 repositories {
@@ -39,9 +34,15 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.sarmatin.mobble:consumable-livedata:1.0.1'
+    implementation 'ru.sarmatin.mobble:utils:1.0.0'
 }
 ```
+
+## ConsumableLiveData
+
+LiveData class that wrapping ConsumableValue and uses ConsumableObserver. 
+Allows build consumable data with LiveData class. 
+Example: use it in SharedViewModels
 
 ### How to use
 
@@ -69,6 +70,44 @@ sharedViewModel.data.observe(viewLifecycleOwner, ConsumableObserver { data ->
 
 
 ```
+
+## EventLiveData
+
+LiveData class with Event-like behavior. Every observer that subsribed this LiveData will be notified only after data is changed.
+
+### How to use
+
+```kotlin
+
+class SomeViewModel : ViewModel() {
+
+    private val _data = EventLiveData<String>()
+    val data: LiveData<String>
+    get()  = _data
+
+    fun setData(string: String){
+        _data.postValue(string)
+    }
+
+}
+
+someViewModel.setData("someData")
+
+//This Observer will recieve data after data changes, not "cached" data.
+someViewModel.data.observe(viewLifecycleOwner, ConsumableObserver { data ->
+            //TODO
+        })
+
+
+```
+# Mobble:MV
+Under construction
+
+# Mobble:Nav
+Under construction
+
+# Mobble:Clean
+Under construction
 
 # License
   [MIT](https://github.com/antonsarmatin/Mobble/blob/master/LICENSE)
