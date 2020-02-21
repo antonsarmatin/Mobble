@@ -1,4 +1,4 @@
-package ru.sarmatin.consumablelivedata
+package ru.sarmatin.mobble.utils.consumablelivedata
 
 /**
  * Created by antonsarmatin
