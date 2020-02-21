@@ -1,2 +1,2 @@
-include ':app', ':consumable-livedata', ':utils'
+include ':app', ':utils'
 rootProject.name='Mobble'

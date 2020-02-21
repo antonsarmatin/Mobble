@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_consumable_parent.view.*
-import ru.sarmatin.consumablelivedata.ConsumableObserver
+import ru.sarmatin.mobble.utils.consumablelivedata.ConsumableObserver
 import ru.sarmatin.mobble.R
 
 /**
@@ -36,9 +36,10 @@ class ConsumableParentFragment : Fragment() {
             findNavController().navigate(R.id.action_consumableParentFragment_to_consumableChildFragment)
         }
 
-        sharedViewModel.data.observe(viewLifecycleOwner, ConsumableObserver {
-            view.textView.text = it
-        })
+        sharedViewModel.data.observe(viewLifecycleOwner,
+            ConsumableObserver {
+                view.textView.text = it
+            })
 
     }
 

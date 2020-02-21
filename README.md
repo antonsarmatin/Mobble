@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.sarmatin.mobble:utils:1.0.0'
+    implementation 'ru.sarmatin.mobble:utils:1.0.1'
 }
 ```
 
@@ -55,7 +55,7 @@ class SharedViewModel : ViewModel() {
     val data: LiveData<ConsumableValue<String>>
     get()  = _data
 
-
+    //Use extension function postValue(value: String)
     fun setData(string: String){
         _data.postValue(string)
     }
