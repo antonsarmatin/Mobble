@@ -4,7 +4,7 @@ Mobble framework - CleanArch, Navigation detached form UI, MVVM like Presentatio
 
 ## Mobble framework has the following libraries:
 
-1. Mobble:Utils
+1. Mobble:Utils [ ![Download](https://api.bintray.com/packages/antonsarmatin/Mobble/utils/images/download.svg) ](https://bintray.com/antonsarmatin/Mobble/utils/_latestVersion)
 2. Mobble:MV
 3. Mobble:Nav
 4. Mobble:Clean
@@ -24,7 +24,8 @@ This framework is under construction!
 
 # Mobble:Utils
 
-### Add to your project
+[ ![Download](https://api.bintray.com/packages/antonsarmatin/Mobble/utils/images/download.svg) ](https://bintray.com/antonsarmatin/Mobble/utils/_latestVersion)
+### Add to your project 
 
 To start using this part, add these lines to the build.gradle of your project:
 
