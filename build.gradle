@@ -24,11 +24,15 @@ allprojects {
         jcenter()
 
     }
+    project.ext {
+        mobbleVersion = '1.0.2'
+    }
 }
 
 subprojects {
     tasks.withType(Javadoc).all { enabled = false }
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
