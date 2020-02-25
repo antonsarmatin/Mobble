@@ -21,7 +21,16 @@ abstract class AbstractSpinnerLoadingFragment(@LayoutRes private val layoutId: I
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layoutId, container, false)
+        val view = inflater.inflate(layoutId, container, false).apply {
+            setStyle(
+                STYLE_NORMAL,
+                android.R.style.Theme_Black_NoTitleBar_Fullscreen
+            )
+        }
+
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        return view
     }
 
     companion object {
