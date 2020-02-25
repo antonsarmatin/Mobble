@@ -7,13 +7,13 @@ apply plugin: 'com.github.dcendents.android-maven'
 ext {
 
     bintrayRepo = 'Mobble'
-    bintrayName = 'utils'
+    bintrayName = 'mv'
 
     publishedGroupId = 'ru.sarmatin.mobble'
-    libraryName = 'utils'
-    artifact = 'utils'
+    libraryName = 'mv'
+    artifact = 'mv'
 
-    libraryDescription = 'Utils library for Android Development in UI Layer'
+    libraryDescription = 'MV extends MVVM presentation architecture with state and actions, also it deliver base platform classes: Application, Activity, Fragment, ViewModel and etc.'
 
     siteUrl = 'https://github.com/antonsarmatin/Mobble'
     gitUrl = 'https://github.com/antonsarmatin/Mobble.git'
@@ -55,6 +55,8 @@ android {
 }
 
 dependencies {
+    implementation project(':utils')
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -63,6 +65,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    // ViewModel Kotlin support
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0"
+
+    //Kotlin Android Extensions
+    implementation "androidx.activity:activity-ktx:1.1.0"
+    implementation "androidx.fragment:fragment-ktx:1.2.1"
 }
 
 if (project.rootProject.file('local.properties').exists()) {

@@ -77,4 +77,5 @@ dependencies {
 
 //    implementation project(':consumable-livedata')
     implementation project(':utils')
+    implementation project(':mv')
 }

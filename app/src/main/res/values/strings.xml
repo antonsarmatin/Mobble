@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Mobble</string>
     <string name="btn_text_consumable">Consumable Input</string>
+    <string name="btn_text_mv">Some MV Fragment</string>
+    <string name="dialog_error_sample_message">Server Error</string>
+    <string name="btn_text_error">Produce Error</string>
+    <string name="btn_text_load_data">Load some data</string>
 </resources>
