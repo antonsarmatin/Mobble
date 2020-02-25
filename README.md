@@ -1,11 +1,11 @@
 # Mobble
-Mobble framework - CleanArch, Navigation detached form UI, MVVM like Presentation Layer Arch and other small solutions/utils for comfortable life in android dev with Clean and MVVM. 
+Mobble framework - CleanArch, Navigation detached form UI, MVVM like Presentation Layer Arch and other small solutions/utils for comfortable life in android dev with Clean and MVVM.
 
 
 ## Mobble framework has the following libraries:
 
 1. Mobble:Utils [ ![Download](https://api.bintray.com/packages/antonsarmatin/Mobble/utils/images/download.svg) ](https://bintray.com/antonsarmatin/Mobble/utils/_latestVersion)
-2. Mobble:MV
+2. Mobble:MV [ ![Download](https://api.bintray.com/packages/antonsarmatin/Mobble/mv/images/download.svg) ](https://bintray.com/antonsarmatin/Mobble/mv/_latestVersion)
 3. Mobble:Nav
 4. Mobble:Clean
 
@@ -14,8 +14,8 @@ Mobble framework - CleanArch, Navigation detached form UI, MVVM like Presentatio
 This framework is under construction!
 
 - [x] Create
-- [x] Mobble:Utils - Consumable LiveData
-- [x] Mobble:Utils - Event LiveData
+- [x] Mobble:Utils - Consumable LiveData, EventLiveData, etc.
+- [x] Mobble:MV - Base App classes with error and loading handling
 - [ ] ...
 - [ ] Mobble:Utils - Small but useful utils
 - [ ] Mobble:MV - MVVM like UI layer pattern with Events and States(based on Android MVVM)
@@ -25,7 +25,7 @@ This framework is under construction!
 # Mobble:Utils
 
 [ ![Download](https://api.bintray.com/packages/antonsarmatin/Mobble/utils/images/download.svg) ](https://bintray.com/antonsarmatin/Mobble/utils/_latestVersion)
-### Add to your project 
+### Add to your project
 
 To start using this part, add these lines to the build.gradle of your project:
 
@@ -35,14 +35,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'ru.sarmatin.mobble:utils:1.0.1'
+    implementation 'ru.sarmatin.mobble:utils:latest_version'
 }
 ```
 
 ## ConsumableLiveData
 
-LiveData class that wrapping ConsumableValue and uses ConsumableObserver. 
-Allows build consumable data with LiveData class. 
+LiveData class that wrapping ConsumableValue and uses ConsumableObserver.
+Allows build consumable data with LiveData class.
 Example: use it in SharedViewModels
 
 ### How to use
@@ -102,7 +102,47 @@ someViewModel.data.observe(viewLifecycleOwner, ConsumableObserver { data ->
 
 ```
 # Mobble:MV
-Under construction
+
+[ ![Download](https://api.bintray.com/packages/antonsarmatin/Mobble/mv/images/download.svg) ](https://bintray.com/antonsarmatin/Mobble/mv/_latestVersion)
+
+MV extends MVVM presentation architecture with state and actions, also it deliver base platform classes: Application, Activity, Fragment, ViewModel and etc.
+
+- MobbleApplication
+- MobbleActivity
+- MobbleFragment
+- MobbleViewModel
+- ...
+
+### Add to your project
+
+To start using this part, add these lines to the build.gradle of your project:
+
+```xml
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'ru.sarmatin.mobble:mv:latest_version'
+}
+```
+
+## MobbleFragment
+
+Base Fragment class that holds error handling and loading processing with MobbleViewModel.
+You can override failure and loading observers to implement custom behaviour
+
+### How to use
+
+See example application
+
+## MobbleViewModel
+
+Base ViewModel class that holds error and loading state fields. This fields can be observed by Fragment that extends MobbleFragment, or it may be observe by any custom Fragment class.
+
+### How to use
+
+See example application
 
 # Mobble:Nav
 Under construction
