@@ -1,4 +1,4 @@
-package ru.sarmatin.mobble.mv.common
+package ru.sarmatin.mobble.mv.common.loading.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import androidx.fragment.app.DialogFragment
  * Date: 2020-02-25
  * Project: Mobble
  */
-abstract class AbstractSpinnerLoadingFragment(@LayoutRes private val layoutId: Int) :
+abstract class AbstractLoadingDialog(@LayoutRes private val layoutId: Int) :
     DialogFragment() {
 
     override fun onCreateView(

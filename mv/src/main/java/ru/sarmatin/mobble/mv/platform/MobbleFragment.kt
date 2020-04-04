@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import ru.sarmatin.mobble.mv.common.AbstractSpinnerLoadingFragment
-import ru.sarmatin.mobble.mv.common.DefaultSpinnerLoadingFragment
+import ru.sarmatin.mobble.mv.common.loading.Loading
+import ru.sarmatin.mobble.mv.common.loading.dialog.AbstractLoadingDialog
+import ru.sarmatin.mobble.mv.common.loading.dialog.DefaultSpinnerLoadingDialog
 import ru.sarmatin.mobble.utils.failure.Failure
 
 /**
@@ -33,21 +34,49 @@ abstract class MobbleFragment : Fragment() {
      * @see Failure
      * @see MobbleViewModel
      */
-    protected open val failureObserver: Observer<Failure> = Observer { }
+    protected open val failureObserver: Observer<Failure> = Observer {
+        when (it) {
+            is Failure.FeatureFailure -> throw NotImplementedError("You should override failureObserver to handle FeatureFailure")
+        }
+    }
 
     /**
      * Default loading observer for loading handling from MobbleViewModel
-     * @see AbstractSpinnerLoadingFragment
-     * @see DefaultSpinnerLoadingFragment
+     * @see Loading
+     * @see AbstractLoadingDialog
+     * @see DefaultSpinnerLoadingDialog
      * @see MobbleViewModel
+     * @see defaultLoadingDialog
      */
-    protected open val loadingObserver: Observer<Boolean> = Observer {
-        if (it == true) {
-            showLoading()
-        } else {
-            hideLoading()
+    protected open val loadingObserver: Observer<Loading> = Observer {
+        when (it) {
+            Loading.NoLoading -> {
+                hideLoading()
+            }
+            is Loading.Fullscreen -> {
+                when (it) {
+                    is MobbleViewModel.DefaultFullscreen -> {
+                        showLoading(defaultLoadingDialog)
+                    }
+                    else -> throw NotImplementedError(
+                        "You should override loading to handle custom fullscreen loading," +
+                                " or you may override default loading dialog "
+                    )
+                }
+            }
         }
     }
+
+    /**
+     * Default loading dialog.
+     * You may override this value in child ViewModel with your own AbstractLoadingDialog implementation to handle with loadingObserver
+     * @see Loading
+     * @see AbstractLoadingDialog
+     * @see MobbleViewModel.DefaultFullscreen
+     * @see MobbleFragment.loadingObserver
+     */
+    protected open val defaultLoadingDialog: AbstractLoadingDialog =
+        DefaultSpinnerLoadingDialog.newInstance()
 
     /**
      * Is fragment created for first time?
@@ -84,22 +113,20 @@ abstract class MobbleFragment : Fragment() {
         super.onPause()
     }
 
-    private fun findSpinnerFragment(): AbstractSpinnerLoadingFragment? =
+    private fun findSpinnerFragment(): AbstractLoadingDialog? =
         parentFragmentManager.run {
-            findFragmentByTag(AbstractSpinnerLoadingFragment.TAG_LOADING_FRAGMENT) as? AbstractSpinnerLoadingFragment
+            findFragmentByTag(AbstractLoadingDialog.TAG_LOADING_FRAGMENT) as? AbstractLoadingDialog
         }
 
     @Synchronized
-    fun showLoading() {
+    fun showLoading(dialog: AbstractLoadingDialog?) {
         val spinnerFragment = findSpinnerFragment()
         if (spinnerFragment != null) return
 
         parentFragmentManager.run {
-            //TODO IF PROVIDED CUSTOM LAYOUT
 
-            val newSpinnerFragment = DefaultSpinnerLoadingFragment.newInstance()
-            newSpinnerFragment.setTargetFragment(this@MobbleFragment, REQUEST_LOADING)
-            newSpinnerFragment.show(this, AbstractSpinnerLoadingFragment.TAG_LOADING_FRAGMENT)
+            dialog?.setTargetFragment(this@MobbleFragment, REQUEST_LOADING)
+            dialog?.show(this, AbstractLoadingDialog.TAG_LOADING_FRAGMENT)
         }
 
     }
