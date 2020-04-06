@@ -127,28 +127,99 @@ dependencies {
 }
 ```
 
-## MobbleFragment
+## MobbleFragment & MobbleViewModel
 
-Base Fragment class that holds error handling and loading processing with MobbleViewModel.
+Base **Fragment** class that holds error handling and loading processing with MobbleViewModel.
 You can override failure and loading observers to implement custom behaviour
 
-### How to use
-
-See example application
-
-## MobbleViewModel
-
-Base ViewModel class that holds error and loading state fields. This fields can be observed by Fragment that extends MobbleFragment, or it may be observe by any custom Fragment class.
+Base **ViewModel** class that holds error and loading state fields. This fields can be observed by Fragment that extends MobbleFragment, or it may be observe by any custom Fragment class.
 
 ### How to use
-
 See example application
+
+#### Handle Loading state
+There are few tools for easy loading state handle.
+
+State is represented by sealed class named **Loading**
+
+    sealed class Loading {
+
+        object NoLoading : Loading(), Serializable
+
+        abstract class Fullscreen : Loading(), Serializable
+
+    }
+
+At this time, there is only one loading state called Fullscreen.
+
+
+**MobbleViewModel** has own default loading state
+This loading state is used by default for all loading events.
+```kotlin
+private val _loading = handle.getLiveData<Loading>("loading")
+val loading: LiveData<Loading>
+        get() = _loading
+
+protected open val defaultLoading: Loading.Fullscreen = DefaultFullscreen()
+
+class DefaultFullscreen : Loading.Fullscreen()
+```
+
+You can set loading state by using `handleLoading(state: Boolean)` function. This will post `defaultLoading` state to loading LiveData field.
+Or you can use `handleLoading(loading: Loading)` to more precise control of loading states.
+
+**MobbleFragment** observes loading state of **MobbleViewModel** and handle it with implementation of  AbstractLoadingDialog.
+
+**Custom loading states:**
+Implement own Loading.Fullscreen.
+
+You can override `defaultLoading` with your own loading state. Or post your state via `handleLoading(loading: Loading)`
+
+```kotlin
+class SomeScreenViewModel(handle: SavedStateHandle) : MobbleViewModel(handle) {
+
+	fun fetchData() {
+        viewModelScope.launch {
+            handleLoading(CustomLoadingFullscreen())
+            //Simulate network fetch
+            withContext(Dispatchers.IO) {
+                delay(3000)
+            }
+            handleLoading(false)
+        }
+    }
+
+    class CustomLoadingFullscreen : Loading.Fullscreen()
+}
+```
+
+In this case you should override `MobbleFragment.handleCustomLoading` function in your associated fragment.
+
+```kotlin
+override fun handleCustomLoading(loading: Loading): AbstractLoadingDialog {
+        return when (loading) {
+            is SomeScreenViewModel.CustomLoadingFullscreen -> CustomLoadingDialog.newInstance()
+            else -> {
+                super.handleCustomLoading(loading)
+            }
+        }
+}
+```
+
+This function return an instance of AbstractLoadingDialog child.
+
+More info -> see source code and example app
 
 # Mobble:Nav
 Under construction
 
 # Mobble:Clean
 Under construction
+
+# Changelog
+## 1.0.3
+
+
 
 # License
   [MIT](https://github.com/antonsarmatin/Mobble/blob/master/LICENSE)
