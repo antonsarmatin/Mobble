@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.sarmatin.mobble.mv.common.loading.Loading
 import ru.sarmatin.mobble.mv.platform.MobbleViewModel
 import ru.sarmatin.mobble.utils.failure.Failure
 
@@ -40,7 +41,19 @@ class SomeScreenViewModel(handle: SavedStateHandle) : MobbleViewModel(handle) {
             }
             handleLoading(false)
         }
-
-
     }
+
+    fun fetchDataWithCustomLoading() {
+        viewModelScope.launch {
+            handleLoading(CustomLoadingFullscreen())
+            withContext(Dispatchers.IO) {
+                delay(3000)
+                _text.postValue("New Data here")
+            }
+            handleLoading(false)
+        }
+    }
+
+
+    class CustomLoadingFullscreen : Loading.Fullscreen()
 }

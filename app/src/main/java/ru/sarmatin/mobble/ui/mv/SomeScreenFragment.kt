@@ -7,7 +7,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_some_screen.view.*
 import ru.sarmatin.mobble.R
+import ru.sarmatin.mobble.mv.common.loading.Loading
+import ru.sarmatin.mobble.mv.common.loading.dialog.AbstractLoadingDialog
 import ru.sarmatin.mobble.mv.platform.MobbleFragment
+import ru.sarmatin.mobble.ui.mv.loading.CustomLoadingDialog
 import ru.sarmatin.mobble.utils.failure.Failure
 
 /**
@@ -48,9 +51,23 @@ class SomeScreenFragment : MobbleFragment() {
             viewModel.fetchData()
         }
 
+        view.btnLoadData2.setOnClickListener {
+            viewModel.fetchDataWithCustomLoading()
+        }
+
         viewModel.text.observe(viewLifecycleOwner, Observer {
             view.textView.text = it
         })
+
+    }
+
+    override fun handleCustomLoading(loading: Loading): AbstractLoadingDialog {
+        return when (loading) {
+            is SomeScreenViewModel.CustomLoadingFullscreen -> CustomLoadingDialog.newInstance()
+            else -> {
+                super.handleCustomLoading(loading)
+            }
+        }
 
     }
 }

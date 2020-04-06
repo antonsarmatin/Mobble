@@ -1,4 +1,4 @@
-package ru.sarmatin.mobble.mv.common
+package ru.sarmatin.mobble.mv.common.loading.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import androidx.fragment.app.DialogFragment
  * Date: 2020-02-25
  * Project: Mobble
  */
-abstract class AbstractSpinnerLoadingFragment(@LayoutRes private val layoutId: Int) :
+abstract class AbstractLoadingDialog(@LayoutRes private val layoutId: Int) :
     DialogFragment() {
 
     override fun onCreateView(
@@ -21,16 +21,7 @@ abstract class AbstractSpinnerLoadingFragment(@LayoutRes private val layoutId: I
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(layoutId, container, false).apply {
-            setStyle(
-                STYLE_NORMAL,
-                android.R.style.Theme_Black_NoTitleBar_Fullscreen
-            )
-        }
-
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        return view
+        return inflater.inflate(layoutId, container, false)
     }
 
     companion object {

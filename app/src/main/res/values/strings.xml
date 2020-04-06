@@ -5,4 +5,5 @@
     <string name="dialog_error_sample_message">Server Error</string>
     <string name="btn_text_error">Produce Error</string>
     <string name="btn_text_load_data">Load some data</string>
+    <string name="btn_text_loading_data_custom_dialog">Load with custom loading dialog</string>
 </resources>
