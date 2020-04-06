@@ -21,16 +21,7 @@ abstract class AbstractLoadingDialog(@LayoutRes private val layoutId: Int) :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(layoutId, container, false).apply {
-            setStyle(
-                STYLE_NORMAL,
-                android.R.style.Theme_Black_NoTitleBar_Fullscreen
-            )
-        }
-
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        return view
+        return inflater.inflate(layoutId, container, false)
     }
 
     companion object {

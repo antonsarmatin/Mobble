@@ -58,7 +58,7 @@ abstract class MobbleFragment : Fragment() {
                     is MobbleViewModel.DefaultFullscreen -> {
                         showLoading(defaultLoadingDialog)
                     }
-                    else -> handleCustomLoading(it)
+                    else -> showLoading(handleCustomLoading(it))
                 }
             }
         }
@@ -81,7 +81,7 @@ abstract class MobbleFragment : Fragment() {
      * @see Loading
      * @see loadingObserver
      */
-    protected open fun handleCustomLoading(loading: Loading) {
+    protected open fun handleCustomLoading(loading: Loading): AbstractLoadingDialog {
         throw NotImplementedError(
             "handleCustomLoading(loading: Loading) - " +
                     "You must override this function in order to be able handle your custom Loading states"

@@ -9,7 +9,7 @@ import ru.sarmatin.mobble.mv.R
  */
 //TODO Update Layout
 class DefaultSpinnerLoadingDialog :
-    AbstractLoadingDialog(R.layout.fragment_spinner_loading_default) {
+    FullscreenDialog(R.layout.fragment_spinner_loading_default) {
 
     companion object {
 
