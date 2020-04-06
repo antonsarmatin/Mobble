@@ -58,10 +58,7 @@ abstract class MobbleFragment : Fragment() {
                     is MobbleViewModel.DefaultFullscreen -> {
                         showLoading(defaultLoadingDialog)
                     }
-                    else -> throw NotImplementedError(
-                        "You should override loading to handle custom fullscreen loading," +
-                                " or you may override default loading dialog "
-                    )
+                    else -> handleCustomLoading(it)
                 }
             }
         }
@@ -69,7 +66,7 @@ abstract class MobbleFragment : Fragment() {
 
     /**
      * Default loading dialog.
-     * You may override this value in child ViewModel with your own AbstractLoadingDialog implementation to handle with loadingObserver
+     * You can override this value in child ViewModel with your own AbstractLoadingDialog implementation to handle with loadingObserver
      * @see Loading
      * @see AbstractLoadingDialog
      * @see MobbleViewModel.DefaultFullscreen
@@ -77,6 +74,19 @@ abstract class MobbleFragment : Fragment() {
      */
     protected open val defaultLoadingDialog: AbstractLoadingDialog =
         DefaultSpinnerLoadingDialog.newInstance()
+
+    /**
+     * You must override this function in order to be able handle your custom Loading states
+     * If not overridden throws exception
+     * @see Loading
+     * @see loadingObserver
+     */
+    protected open fun handleCustomLoading(loading: Loading) {
+        throw NotImplementedError(
+            "handleCustomLoading(loading: Loading) - " +
+                    "You must override this function in order to be able handle your custom Loading states"
+        )
+    }
 
     /**
      * Is fragment created for first time?

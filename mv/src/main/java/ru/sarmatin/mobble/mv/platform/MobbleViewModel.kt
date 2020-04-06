@@ -27,6 +27,9 @@ abstract class MobbleViewModel(handle: SavedStateHandle) : ViewModel() {
 
     /**
      * Default fullscreen loading
+     * You can override this property with custom Loading.Fullscreen child,
+     * in this case your must override {@link MobbleFragment.handleCustomLoading} function
+     * to handle custom Fullscreen loading
      * @see Loading.Fullscreen
      */
     protected open val defaultLoading: Loading.Fullscreen = DefaultFullscreen()
@@ -46,7 +49,7 @@ abstract class MobbleViewModel(handle: SavedStateHandle) : ViewModel() {
     }
 
     /**
-     * Handles loading state with Boolean param
+     * Handles loading state with defaultLoading
      * when True - post defaultLoading
      * when False - post NoLoading
      * @see Loading
@@ -57,6 +60,14 @@ abstract class MobbleViewModel(handle: SavedStateHandle) : ViewModel() {
     }
 
 
+    /**
+     * Default Loading state.
+     * This Loading state is used by default.
+     * @see Loading
+     * @see defaultLoading
+     * @see MobbleFragment.loadingObserver
+     * @see MobbleFragment.defaultLoadingDialog
+     */
     class DefaultFullscreen : Loading.Fullscreen()
 
 }
