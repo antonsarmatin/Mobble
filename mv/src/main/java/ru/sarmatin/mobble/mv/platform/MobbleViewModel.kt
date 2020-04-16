@@ -2,7 +2,6 @@ package ru.sarmatin.mobble.mv.platform
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import ru.sarmatin.mobble.mv.common.loading.Loading
 import ru.sarmatin.mobble.utils.failure.Failure
 import ru.sarmatin.mobble.utils.liveevent.EventLiveData
@@ -15,7 +14,7 @@ import ru.sarmatin.mobble.utils.liveevent.EventLiveData
  * @see Failure
  *
  */
-abstract class MobbleViewModel(handle: SavedStateHandle) : ViewModel() {
+abstract class MobbleViewModel(handle: SavedStateHandle) : MobbleAbstractViewModel() {
 
     private val _failure = EventLiveData<Failure>()
     val failure: LiveData<Failure>
@@ -32,7 +31,8 @@ abstract class MobbleViewModel(handle: SavedStateHandle) : ViewModel() {
      * to handle custom Fullscreen loading
      * @see Loading.Fullscreen
      */
-    protected open val defaultLoading: Loading.Fullscreen = DefaultFullscreen()
+    protected open val defaultLoading: Loading.Fullscreen =
+        DefaultFullscreen()
 
 
     protected open fun handleFailure(failure: Failure) {

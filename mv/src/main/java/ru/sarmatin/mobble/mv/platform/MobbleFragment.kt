@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import ru.sarmatin.mobble.mv.common.loading.Loading
 import ru.sarmatin.mobble.mv.common.loading.dialog.AbstractLoadingDialog
@@ -18,9 +17,8 @@ import ru.sarmatin.mobble.utils.failure.Failure
  * Date: 2020-02-25
  * Project: Mobble
  */
-abstract class MobbleFragment : Fragment() {
+abstract class MobbleFragment : MobbleAbstractFragment() {
 
-    //TODO GlobalState
 
     /**
      * Layout resourse Id that would be inflated
@@ -135,7 +133,9 @@ abstract class MobbleFragment : Fragment() {
 
         parentFragmentManager.run {
 
-            dialog?.setTargetFragment(this@MobbleFragment, REQUEST_LOADING)
+            dialog?.setTargetFragment(this@MobbleFragment,
+                REQUEST_LOADING
+            )
             dialog?.show(this, AbstractLoadingDialog.TAG_LOADING_FRAGMENT)
         }
 
