@@ -8,5 +8,8 @@ package ru.sarmatin.mobble.mv.platform
 
 abstract class MobbleStateFragment : MobbleAbstractFragment() {
 
+    //TODO DEFAULT STATE HANDLING
+    // Loading, Failure
+    // Possibility to implement custom handling?
 
 }
