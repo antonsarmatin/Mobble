@@ -1,6 +1,7 @@
 package ru.sarmatin.mobble.mv.platform
 
 import androidx.lifecycle.ViewModel
+import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
 import ru.sarmatin.mobble.mv.common.loading.Loading
 import ru.sarmatin.mobble.utils.failure.Failure
 
@@ -26,26 +27,20 @@ abstract class MobbleAbstractViewModel : ViewModel() {
     protected open val defaultLoading: Loading.Fullscreen =
         DefaultFullscreen()
 
-    /**
-     * Default Loading state.
-     * This Loading state is used by default.
-     * @see Loading
-     * @see defaultLoading
-     * @see MobbleFragment.loadingObserver
-     * @see MobbleFragment.defaultLoadingDialog
-     */
-    class DefaultFullscreen : Loading.Fullscreen()
+
 
     /**
      * Handles Loading object
      * @see Loading
      */
     protected abstract fun handleLoading(loading: Loading)
+    protected abstract fun handleLoading(isLoading: Boolean)
 
 
     /**
      * Handles Failure object
      */
     protected abstract fun handleFailure(failure: Failure)
+
 
 }

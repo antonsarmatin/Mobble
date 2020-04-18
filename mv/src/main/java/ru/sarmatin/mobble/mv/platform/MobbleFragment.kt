@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.Observer
+import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
 import ru.sarmatin.mobble.mv.common.loading.Loading
 import ru.sarmatin.mobble.mv.common.loading.dialog.AbstractLoadingDialog
 import ru.sarmatin.mobble.mv.common.loading.dialog.DefaultSpinnerLoadingDialog
@@ -18,12 +19,6 @@ import ru.sarmatin.mobble.utils.failure.Failure
  * Project: Mobble
  */
 abstract class MobbleFragment : MobbleAbstractFragment() {
-
-
-    /**
-     * Layout resourse Id that would be inflated
-     */
-    abstract fun layoutId(): Int
 
     abstract val viewModel: MobbleViewModel
 
@@ -53,7 +48,7 @@ abstract class MobbleFragment : MobbleAbstractFragment() {
             }
             is Loading.Fullscreen -> {
                 when (it) {
-                    is MobbleViewModel.DefaultFullscreen -> {
+                    is DefaultFullscreen -> {
                         showLoading(defaultLoadingDialog)
                     }
                     else -> showLoading(handleCustomLoading(it))
@@ -86,21 +81,6 @@ abstract class MobbleFragment : MobbleAbstractFragment() {
         )
     }
 
-    /**
-     * Is fragment created for first time?
-     */
-    protected fun firstTimeCreated(savedInstanceState: Bundle?) = savedInstanceState == null
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View =
-        inflater.inflate(layoutId(), container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 
     override fun onResume() {
         super.onResume()
@@ -112,41 +92,7 @@ abstract class MobbleFragment : MobbleAbstractFragment() {
         viewModel.failure.removeObserver(failureObserver)
         viewModel.loading.removeObserver(loadingObserver)
 
-        val view = activity?.currentFocus
-        if (view != null) {
-            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-
         super.onPause()
-    }
-
-    private fun findSpinnerFragment(): AbstractLoadingDialog? =
-        parentFragmentManager.run {
-            findFragmentByTag(AbstractLoadingDialog.TAG_LOADING_FRAGMENT) as? AbstractLoadingDialog
-        }
-
-    @Synchronized
-    fun showLoading(dialog: AbstractLoadingDialog?) {
-        val spinnerFragment = findSpinnerFragment()
-        if (spinnerFragment != null) return
-
-        parentFragmentManager.run {
-
-            dialog?.setTargetFragment(this@MobbleFragment,
-                REQUEST_LOADING
-            )
-            dialog?.show(this, AbstractLoadingDialog.TAG_LOADING_FRAGMENT)
-        }
-
-    }
-
-    fun hideLoading() = findSpinnerFragment()?.dismiss()
-
-    companion object {
-
-        private const val REQUEST_LOADING = 871
-
     }
 
 

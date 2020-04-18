@@ -47,7 +47,7 @@ abstract class MobbleViewModel(handle: SavedStateHandle) : MobbleAbstractViewMod
      * @see Loading
      * @see defaultLoading
      */
-    protected open fun handleLoading(isLoading: Boolean) {
+    override fun handleLoading(isLoading: Boolean) {
         if (isLoading) _loading.postValue(defaultLoading) else _loading.postValue(Loading.NoLoading)
     }
 

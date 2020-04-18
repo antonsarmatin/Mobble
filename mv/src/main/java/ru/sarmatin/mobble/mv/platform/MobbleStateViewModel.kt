@@ -29,25 +29,61 @@ abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle
      *
      */
 
-    open class MobbleState : Serializable {
+    open class MobbleState(
+    ) : Serializable {
 
-        val failure: Failure? = null
+        internal var _loading: Loading? = null
+        val loading: Loading?
+            get() = _loading
 
-        val loading: Loading? = null
+        internal var _failure: Failure? = null
+        val failure: Failure?
+            get() = _failure
+
 
     }
 
-    open class MobbleAction()
+    private open class MobbleAction()
 
 
+    /**
+     * Handles Failure object and modify failure state of ViewModel State
+     */
     override fun handleFailure(failure: Failure) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        updateState(viewState.value?.apply {
+            _failure = failure
+        })
     }
 
-
+    /**
+     * Handles Loading object and modify loading state of ViewModel State
+     * @see Loading
+     */
     override fun handleLoading(loading: Loading) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        updateState(viewState.value?.apply {
+            _loading = loading
+        })
     }
 
+
+    /**
+     * Handles loading state with defaultLoading
+     * when True - post defaultLoading
+     * when False - post NoLoading
+     * @see Loading
+     * @see defaultLoading
+     */
+    override fun handleLoading(isLoading: Boolean) {
+        val currentState = viewState.value
+        updateState(currentState?.apply {
+            this._loading = if (isLoading) defaultLoading else Loading.NoLoading
+        })
+    }
+
+    protected fun updateState(newState: S?) {
+        newState?.let {
+            _viewState.postValue(it)
+        }
+    }
 
 }
