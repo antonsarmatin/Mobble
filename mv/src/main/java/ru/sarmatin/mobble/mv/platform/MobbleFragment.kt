@@ -57,29 +57,7 @@ abstract class MobbleFragment : MobbleAbstractFragment() {
         }
     }
 
-    /**
-     * Default loading dialog.
-     * You can override this value in child ViewModel with your own AbstractLoadingDialog implementation to handle with loadingObserver
-     * @see Loading
-     * @see AbstractLoadingDialog
-     * @see MobbleViewModel.DefaultFullscreen
-     * @see MobbleFragment.loadingObserver
-     */
-    protected open val defaultLoadingDialog: AbstractLoadingDialog =
-        DefaultSpinnerLoadingDialog.newInstance()
 
-    /**
-     * You must override this function in order to be able handle your custom Loading states
-     * If not overridden throws exception
-     * @see Loading
-     * @see loadingObserver
-     */
-    protected open fun handleCustomLoading(loading: Loading): AbstractLoadingDialog {
-        throw NotImplementedError(
-            "handleCustomLoading(loading: Loading) - " +
-                    "You must override this function in order to be able handle your custom Loading states"
-        )
-    }
 
 
     override fun onResume() {

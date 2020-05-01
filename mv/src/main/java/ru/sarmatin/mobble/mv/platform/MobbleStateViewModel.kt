@@ -1,5 +1,6 @@
 package ru.sarmatin.mobble.mv.platform
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import ru.sarmatin.mobble.mv.common.loading.Loading
@@ -20,6 +21,16 @@ abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle
     protected val _viewState = handle.getLiveData<S>("viewState")
     val viewState: LiveData<S>
         get() = _viewState
+
+    init {
+        if (_viewState.value == null)
+            _viewState.value = defaultState
+    }
+
+    /**
+     * Default VM state
+     */
+    abstract val defaultState: S
 
     /**
      * Common State class for ViewModel
