@@ -40,7 +40,7 @@ abstract class MobbleAbstractViewModel : ViewModel() {
     /**
      * Handles Failure object
      */
-    protected abstract fun handleFailure(failure: Failure)
+    protected abstract fun handleFailure(failure: Failure, abortLoading: Boolean = true)
 
 
 }

@@ -27,9 +27,11 @@ abstract class MobbleViewModel(handle: SavedStateHandle) : MobbleAbstractViewMod
     /**
      * Handles Failure object and modify failure state of ViewModel
      */
-    override fun handleFailure(failure: Failure) {
+    override fun handleFailure(failure: Failure, abortLoading: Boolean) {
         handleLoading(Loading.NoLoading)
         _failure.postValue(failure)
+        if (abortLoading)
+            _loading.postValue(Loading.NoLoading)
     }
 
     /**

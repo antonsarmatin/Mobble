@@ -49,9 +49,12 @@ abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle
     /**
      * Handles Failure object and modify failure state of ViewModel State
      */
-    override fun handleFailure(failure: Failure) {
+    override fun handleFailure(failure: Failure, abortLoading: Boolean) {
         updateState(viewState.value?.apply {
             _failure = failure
+            if (abortLoading)
+                _loading = Loading.NoLoading
+
         })
     }
 
