@@ -13,52 +13,42 @@ import ru.sarmatin.mobble.utils.failure.Failure
  * Project: Mobble
  */
 
-abstract class MobbleStateFragment : MobbleAbstractFragment() {
+abstract class MobbleStateFragment<S : MobbleStateViewModel.MobbleState> :
+    MobbleAbstractFragment() {
 
-    abstract val viewModel: MobbleStateViewModel<*>
+    abstract val viewModel: MobbleStateViewModel<S>
 
-    //TODO DEFAULT STATE HANDLING
-    // Loading, Failure
-    // Possibility to implement custom handling?
+    protected open val stateObserver: Observer<S> = Observer {
 
-    protected open val stateObserver: Observer<in MobbleStateViewModel.MobbleState> = Observer {
+        handleFailure(it.failure)
 
-        when (it.failure) {
-            Failure.NetworkConnection -> {
-                TODO()
-            }
-            Failure.ServerError -> {
-                TODO()
-            }
-            Failure.Ignore -> {
-                TODO()
-            }
-            is Failure.FeatureFailure -> {
-                TODO()
-            }
-            null -> {
+        handleLoading(it.loading)
 
-            }
-        }
+        handleState(it)
+    }
 
-        when (it.loading) {
+
+    abstract fun handleState(state: S)
+
+    abstract fun handleFailure(failure: Failure?)
+
+    protected open fun handleLoading(loading: Loading?){
+        when (loading) {
             Loading.NoLoading -> {
                 hideLoading()
             }
             is Loading.Fullscreen -> {
-                when (it.loading) {
+                when (loading) {
                     is DefaultFullscreen -> {
                         showLoading(defaultLoadingDialog)
                     }
                     else -> {
-                        showLoading(handleCustomLoading(it.loading as Loading.Fullscreen))
+                        showLoading(handleCustomLoading(loading))
                     }
                 }
             }
 
         }
-
-
     }
 
     override fun onResume() {
