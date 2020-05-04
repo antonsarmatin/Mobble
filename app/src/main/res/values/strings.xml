@@ -6,4 +6,6 @@
     <string name="btn_text_error">Produce Error</string>
     <string name="btn_text_load_data">Load some data</string>
     <string name="btn_text_loading_data_custom_dialog">Load with custom loading dialog</string>
+    <string name="btn_text_mv_state">SOME STATE FRAGMENT</string>
+    <string name="error_message">Some error happened</string>
 </resources>
