@@ -44,7 +44,7 @@ abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle
      *
      */
 
-    open class MobbleState(
+    abstract class MobbleState(
     ) : Serializable {
 
         internal var _loading: Loading? = null
