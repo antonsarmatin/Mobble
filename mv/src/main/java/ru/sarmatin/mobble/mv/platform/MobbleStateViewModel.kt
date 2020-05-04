@@ -17,7 +17,11 @@ import java.io.Serializable
 abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle: SavedStateHandle) :
     MobbleAbstractViewModel() {
 
-
+    /**
+     * State LiveData field
+     * @see MobbleState
+     * @see SavedStateHandle
+     */
     protected val _viewState = handle.getLiveData<S>("viewState")
     val viewState: LiveData<S>
         get() = _viewState
@@ -94,6 +98,9 @@ abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle
         })
     }
 
+    /**
+     * Update state
+     */
     protected fun updateState(newState: S?) {
         newState?.let {
             _viewState.postValue(it)

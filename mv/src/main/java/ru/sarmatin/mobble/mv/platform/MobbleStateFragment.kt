@@ -1,9 +1,10 @@
 package ru.sarmatin.mobble.mv.platform
 
-import android.util.Log
 import androidx.lifecycle.Observer
 import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
 import ru.sarmatin.mobble.mv.common.loading.Loading
+import ru.sarmatin.mobble.mv.common.loading.dialog.AbstractLoadingDialog
+import ru.sarmatin.mobble.mv.common.loading.dialog.DefaultSpinnerLoadingDialog
 import ru.sarmatin.mobble.utils.failure.Failure
 
 
@@ -18,6 +19,15 @@ abstract class MobbleStateFragment<S : MobbleStateViewModel.MobbleState> :
 
     abstract val viewModel: MobbleStateViewModel<S>
 
+    /**
+     * Default State observer
+     * Override this observer to implement your custom state handling
+     *
+     * @see MobbleStateViewModel.MobbleState
+     * @see Failure
+     * @see Loading
+     *
+     */
     protected open val stateObserver: Observer<S> = Observer {
 
         handleFailure(it.failure)
@@ -28,10 +38,29 @@ abstract class MobbleStateFragment<S : MobbleStateViewModel.MobbleState> :
     }
 
 
+    /**
+     * Handle custom state
+     * Implement this function in your fragment
+     */
     abstract fun handleState(state: S)
 
+    /**
+     * Handle Failure state
+     * Implement this function to manage Failure state in your fragment or base fragment
+     *
+     * @see Failure
+     *
+     */
     abstract fun handleFailure(failure: Failure?)
 
+    /**
+     * Default loading handling function f
+     * @see Loading
+     * @see AbstractLoadingDialog
+     * @see DefaultSpinnerLoadingDialog
+     * @see MobbleStateViewModel
+     * @see defaultLoadingDialog
+     */
     protected open fun handleLoading(loading: Loading?){
         when (loading) {
             Loading.NoLoading -> {
