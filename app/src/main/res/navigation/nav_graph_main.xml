@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_someScreenFragment"
             app:destination="@id/someScreenFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_someStateFragment"
+            app:destination="@id/someStateFragment" />
     </fragment>
     <fragment
         android:id="@+id/consumableParentFragment"
@@ -30,6 +33,10 @@
         android:id="@+id/someScreenFragment"
         android:name="ru.sarmatin.mobble.ui.mv.SomeScreenFragment"
         android:label="SomeScreenFragment" />
+    <fragment
+        android:id="@+id/someStateFragment"
+        android:name="ru.sarmatin.mobble.ui.mv.state.SomeStateFragment"
+        android:label="SomeStateFragment" />
 
 
 </navigation>

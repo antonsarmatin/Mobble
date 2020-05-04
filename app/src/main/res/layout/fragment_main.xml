@@ -29,6 +29,12 @@
             android:layout_height="wrap_content"
             android:text="@string/btn_text_mv"/>
 
+        <Button
+            android:id="@+id/btnMvState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_text_mv_state"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

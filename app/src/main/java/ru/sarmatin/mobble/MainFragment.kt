@@ -35,6 +35,10 @@ class MainFragment : Fragment(){
             findNavController().navigate(R.id.action_mainFragment_to_someScreenFragment)
         }
 
+        view.btnMvState.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_someStateFragment)
+        }
+
     }
 
 }
