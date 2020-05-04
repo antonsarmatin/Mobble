@@ -115,7 +115,7 @@ There is two types of MVVM implementation:
 
 To start using this part, add these lines to the build.gradle of your project:
 
-```xml
+```groovy
 repositories {
     jcenter()
 }
@@ -139,7 +139,7 @@ See example application
 There are few tools for easy loading state handle.
 
 State is represented by sealed class named **Loading**
-
+```kotlin
     sealed class Loading {
 
         object NoLoading : Loading(), Serializable
@@ -147,6 +147,7 @@ State is represented by sealed class named **Loading**
         abstract class Fullscreen : Loading(), Serializable
 
     }
+```
 
 At this time, there is only one loading state called Fullscreen.
 
