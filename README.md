@@ -107,11 +107,9 @@ someViewModel.data.observe(viewLifecycleOwner, ConsumableObserver { data ->
 
 MV extends MVVM presentation architecture with state and actions, also it deliver base platform classes: Application, Activity, Fragment, ViewModel and etc.
 
-- MobbleApplication
-- MobbleActivity
-- MobbleFragment
-- MobbleViewModel
-- ...
+There is two types of MVVM implementation:
+- Common (Vanilla MVVM)
+- Stated (MVVM with State and Action)
 
 ### Add to your project
 
@@ -156,13 +154,18 @@ At this time, there is only one loading state called Fullscreen.
 **MobbleViewModel** has own default loading state
 This loading state is used by default for all loading events.
 ```kotlin
-private val _loading = handle.getLiveData<Loading>("loading")
-val loading: LiveData<Loading>
-        get() = _loading
-
-protected open val defaultLoading: Loading.Fullscreen = DefaultFullscreen()
+class MobbleAbstractViewModel: ViewModel(){
+    protected open val defaultLoading: Loading.Fullscreen = DefaultFullscreen()
+}
 
 class DefaultFullscreen : Loading.Fullscreen()
+
+class MobbleViewModel: MobbleAbstractViewModel(){
+    private val _loading = handle.getLiveData<Loading>("loading")
+    val loading: LiveData<Loading>
+            get() = _loading
+}
+
 ```
 
 You can set loading state by using `handleLoading(state: Boolean)` function. This will post `defaultLoading` state to loading LiveData field.
@@ -193,7 +196,7 @@ class SomeScreenViewModel(handle: SavedStateHandle) : MobbleViewModel(handle) {
 }
 ```
 
-In this case you should override `MobbleFragment.handleCustomLoading` function in your associated fragment.
+In this case you should override `MobbleAbstractFragment.handleCustomLoading` function in your associated fragment.
 
 ```kotlin
 override fun handleCustomLoading(loading: Loading): AbstractLoadingDialog {
@@ -208,6 +211,160 @@ override fun handleCustomLoading(loading: Loading): AbstractLoadingDialog {
 
 This function return an instance of AbstractLoadingDialog child.
 
+### Handle Failure state
+
+Override `MobbleFragment.failureObserver` in your fragment to implement Failure handling (you can implement default handling in base fragment)
+
+## MobbleStateFragment & MobbleStateViewModel
+Implementation of MVVM pattern with some improvements:
+- State
+- Action
+- State based Navigation (soon... in Mobble:Nav)
+
+Base **ViewModel** class that contains MobbleState with common fields (Loading, Failure), tools to manage common state fields and features to implement your custom state by extending MobbleState.
+This state is used to notify Fragment about which VM's fields should be observed. **IMPORTANT! WARNING! State should not contain bulk data!**
+
+Base **Fragment** class that handles MobbleState processing and tools to handle your custom state.
+
+### How to use
+
+See example application
+
+#### MobbleStateViewModel
+
+**MobbleState** parent class for custom States, contains common state fields: Loading, Failure
+**MobbleStateViewModel** contains **MobbleState** child
+
+```kotlin
+
+abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle: SavedStateHandle) :
+    MobbleAbstractViewModel() {
+    
+    protected val _viewState = handle.getLiveData<S>("viewState")
+    val viewState: LiveData<S>
+        get() = _viewState
+        
+    //... 
+    
+    abstract class MobbleState(
+    ) : Serializable {
+
+        internal var _loading: Loading? = null
+        val loading: Loading?
+            get() = _loading
+
+        internal var _failure: Failure? = null
+        val failure: Failure?
+            get() = _failure
+
+
+    }
+    
+    //...
+   
+    
+}
+
+```
+
+Extends from **MobbleStateViewModel** and implement your custom state:
+**IMPORTANT! WARNING! State should not contain bulk data!**
+
+```kotlin
+
+class SomeStateViewModel(private val handle: SavedStateHandle) :
+    MobbleStateViewModel<SomeStateViewModel.ViewState>(handle) {
+
+    //LiveData fields here
+
+    override val defaultState: ViewState
+        get() = ViewState(ViewState.ColorType.COLOR_RED)
+
+    //Here your custom state with some fields
+    //IMPORTANT! WARNING! State should not contain bulk data!
+    data class ViewState(
+        val color: ColorType
+    ) : MobbleState() {
+
+        enum class ColorType {
+            COLOR_RED,
+            COLOR_GREEN,
+            COLOR_BLUE
+        }
+
+    }
+
+
+    fun setColorType(type: ViewState.ColorType) {
+        updateState(_viewState.value?.copy(color = type))
+    }
+
+
+}
+
+```
+
+#### MobbleStateFragment
+
+```kotlin
+abstract class MobbleStateFragment<S : MobbleStateViewModel.MobbleState> :
+    MobbleAbstractFragment()
+    
+    abstract val viewModel: MobbleStateViewModel<S>
+    
+    //...
+    
+}
+```
+
+
+##### Handle Loading state
+Similar to **MobbleViewModel**
+
+Implement your own Loading class and put as parameter to loading field of VM's State
+```kotlin
+class SomeStateViewModel(private val handle: SavedStateHandle) :
+    MobbleStateViewModel<SomeStateViewModel.ViewState>(handle) {
+
+    //...
+    
+    fun fetchData() {
+        viewModelScope.launch {
+            handleLoading(CustomLoadingFullscreen())
+            //Simulate network fetch
+            withContext(Dispatchers.IO) {
+                delay(3000)
+            }
+            handleLoading(false)
+        }
+    }
+    
+    class CustomLoadingFullscreen : Loading.Fullscreen()
+    
+}
+```
+
+Override `MobbleAbstractFragment.handleCustomLoading` function in your associated fragment
+```kotlin
+override fun handleCustomLoading(loading: Loading): AbstractLoadingDialog {
+        return when (loading) {
+            is SomeStateViewModel.CustomLoadingFullscreen -> CustomLoadingDialog.newInstance()
+            else -> {
+                super.handleCustomLoading(loading)
+            }
+        }
+}
+```
+
+This function return an instance of AbstractLoadingDialog child.
+
+
+##### Handle Failure state
+
+Implement `MobbleStateFragment.handleFailure` in your fragment (you can implement default handling in base fragment)
+
+
+
 More info -> see source code and example app
 
 # Mobble:Nav
@@ -218,6 +375,9 @@ Under construction
 
 # Changelog
 ## 1.0.3
+- MV Common: Loading handling feature
+## 1.0.4
+- MV Stated: ViewModel and Fragment
 
 
 
