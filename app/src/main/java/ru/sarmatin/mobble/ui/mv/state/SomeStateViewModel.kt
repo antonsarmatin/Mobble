@@ -1,13 +1,9 @@
 package ru.sarmatin.mobble.ui.mv.state
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import ru.sarmatin.mobble.mv.platform.MobbleStateViewModel
+import ru.sarmatin.mobble.mv.platform.state.FeatureState
 
 /**
  * Created by antonsarmatin
@@ -35,24 +31,19 @@ class SomeStateViewModel(private val handle: SavedStateHandle) :
         _text3.value = "Blue..."
     }
 
-    override val defaultState: ViewState
-        get() = ViewState(ViewState.ColorType.COLOR_RED)
+    override val defaultFeatureState: SomeStateViewModel.ViewState
+        get() = ViewState.Red
 
-    data class ViewState(
-        val color: ColorType
-    ) : MobbleState() {
-
-        enum class ColorType {
-            COLOR_RED,
-            COLOR_GREEN,
-            COLOR_BLUE
-        }
-
+    sealed class ViewState(): FeatureState(){
+        object Red: ViewState()
+        object Green: ViewState()
+        object Blue: ViewState()
     }
 
 
-    fun setColorType(type: ViewState.ColorType) {
-        updateState(_viewState.value?.copy(color = type))
+
+    fun setColorType(type: ViewState) {
+        updateFeatureState(type)
     }
 
 

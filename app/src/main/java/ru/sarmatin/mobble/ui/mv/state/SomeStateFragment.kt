@@ -16,7 +16,6 @@ import ru.sarmatin.mobble.R
  * Date: 2020-05-01
  * Project: Mobble
  */
-typealias ColorType = SomeStateViewModel.ViewState.ColorType
 
 class SomeStateFragment : BaseFragment<SomeStateViewModel.ViewState>(){
 
@@ -36,13 +35,13 @@ class SomeStateFragment : BaseFragment<SomeStateViewModel.ViewState>(){
         text = view.text
 
         btnColor1.setOnClickListener {
-            viewModel.setColorType(ColorType.COLOR_RED)
+            viewModel.setColorType(SomeStateViewModel.ViewState.Red)
         }
         btnColor2.setOnClickListener {
-            viewModel.setColorType(ColorType.COLOR_GREEN)
+            viewModel.setColorType(SomeStateViewModel.ViewState.Green)
         }
         btnColor3.setOnClickListener {
-            viewModel.setColorType(ColorType.COLOR_BLUE)
+            viewModel.setColorType(SomeStateViewModel.ViewState.Blue)
         }
     }
 
@@ -56,11 +55,11 @@ class SomeStateFragment : BaseFragment<SomeStateViewModel.ViewState>(){
                 setCardColor(R.color.card1)
                 viewModel.text1.observe(viewLifecycleOwner, textObserver)
             }
-            ColorType.COLOR_GREEN -> {
+            SomeStateViewModel.ViewState.Green -> {
                 setCardColor(R.color.card2)
                 viewModel.text2.observe(viewLifecycleOwner, textObserver)
             }
-            ColorType.COLOR_BLUE -> {
+            SomeStateViewModel.ViewState.Blue -> {
                 setCardColor(R.color.card3)
                 viewModel.text3.observe(viewLifecycleOwner, textObserver)
             }
