@@ -46,13 +46,13 @@ class SomeStateFragment : BaseFragment<SomeStateViewModel.ViewState>(){
         }
     }
 
-    override fun handleState(state: SomeStateViewModel.ViewState) {
+    override fun handleFeatureState(featureState: SomeStateViewModel.ViewState?) {
 
         viewModel.text1.removeObserver(textObserver)
         viewModel.text2.removeObserver(textObserver)
         viewModel.text3.removeObserver(textObserver)
-        when(state.color){
-            ColorType.COLOR_RED -> {
+        when(featureState){
+            SomeStateViewModel.ViewState.Red -> {
                 setCardColor(R.color.card1)
                 viewModel.text1.observe(viewLifecycleOwner, textObserver)
             }

@@ -1,11 +1,10 @@
 package ru.sarmatin.mobble.mv.platform
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import ru.sarmatin.mobble.mv.common.loading.Loading
+import ru.sarmatin.mobble.mv.platform.state.FeatureState
 import ru.sarmatin.mobble.utils.failure.Failure
-import java.io.Serializable
 
 
 /**
@@ -14,7 +13,8 @@ import java.io.Serializable
  * Project: Mobble
  */
 
-abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle: SavedStateHandle) :
+@Suppress("NAME_SHADOWING")
+abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) :
     MobbleAbstractViewModel() {
 
     /**
@@ -22,41 +22,57 @@ abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle
      * @see MobbleState
      * @see SavedStateHandle
      */
-    protected val _viewState = handle.getLiveData<S>("viewState")
-    val viewState: LiveData<S>
+    protected val _viewState = handle.getLiveData<MobbleState<S>>("viewState")
+    val viewState: LiveData<MobbleState<S>>
         get() = _viewState
 
-    init {
-        if (_viewState.value == null)
-            _viewState.value = defaultState
-    }
 
     /**
-     * Default VM state
+     * Default common VM state
      */
-    abstract val defaultState: S
+    protected val defaultCommonState = CommonState(Loading.NoLoading, null)
 
     /**
-     * Common State class for ViewModel
-     * Extend this class to add custom state related fields
+     * Default feature VM state
+     */
+    abstract val defaultFeatureState: S
+
+    /**
+     * State class for ViewModel
+     * @param commonState
+     * @param featureState
      *
      * WARNING! State should not contain bulk data!
      *
      */
 
-    abstract class MobbleState(
-    ) : Serializable {
+    data class MobbleState<S: FeatureState>(val commonState: CommonState, val featureState: S?) {
 
-        internal var _loading: Loading? = null
-        val loading: Loading?
-            get() = _loading
+        fun withLoading(loading: Loading) = this.copy(
+            commonState = commonState.copy(
+                loading = loading
+            )
+        )
 
-        internal var _failure: Failure? = null
-        val failure: Failure?
-            get() = _failure
-
+        fun withFailure(failure: Failure?, abortLoading: Boolean = true) =
+            if (abortLoading) {
+                this.copy(
+                    commonState = commonState.copy(
+                        loading = Loading.NoLoading,
+                        failure = failure
+                    )
+                )
+            } else {
+                this.copy(
+                    commonState = commonState.copy(
+                        failure = failure
+                    )
+                )
+            }
 
     }
+
+    data class CommonState(val loading: Loading?, val failure: Failure?)
 
     private open class MobbleAction()
 
@@ -65,12 +81,8 @@ abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle
      * Handles Failure object and modify failure state of ViewModel State
      */
     override fun handleFailure(failure: Failure, abortLoading: Boolean) {
-        updateState(viewState.value?.apply {
-            _failure = failure
-            if (abortLoading)
-                _loading = Loading.NoLoading
-
-        })
+        val newState = _viewState.value?.withFailure(failure, abortLoading)
+        _viewState.postValue(newState)
     }
 
     /**
@@ -78,9 +90,8 @@ abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle
      * @see Loading
      */
     override fun handleLoading(loading: Loading) {
-        updateState(viewState.value?.apply {
-            _loading = loading
-        })
+        val newState = _viewState.value?.withLoading(loading)
+        _viewState.postValue(newState)
     }
 
 
@@ -92,19 +103,19 @@ abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle
      * @see defaultLoading
      */
     override fun handleLoading(isLoading: Boolean) {
-        val currentState = viewState.value
-        updateState(currentState?.apply {
-            this._loading = if (isLoading) defaultLoading else Loading.NoLoading
-        })
+        if (isLoading) {
+            handleLoading(defaultLoading)
+        } else {
+            handleLoading(Loading.NoLoading)
+        }
     }
 
     /**
      * Update state
      */
-    protected fun updateState(newState: S?) {
-        newState?.let {
-            _viewState.postValue(it)
-        }
+    protected fun updateFeatureState(state: S?) {
+        val newState = _viewState.value?.copy(featureState = state)
+        _viewState.postValue(newState)
     }
 
 }

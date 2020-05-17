@@ -5,6 +5,7 @@ import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
 import ru.sarmatin.mobble.mv.common.loading.Loading
 import ru.sarmatin.mobble.mv.common.loading.dialog.AbstractLoadingDialog
 import ru.sarmatin.mobble.mv.common.loading.dialog.DefaultSpinnerLoadingDialog
+import ru.sarmatin.mobble.mv.platform.state.FeatureState
 import ru.sarmatin.mobble.utils.failure.Failure
 
 
@@ -14,7 +15,7 @@ import ru.sarmatin.mobble.utils.failure.Failure
  * Project: Mobble
  */
 
-abstract class MobbleStateFragment<S : MobbleStateViewModel.MobbleState> :
+abstract class MobbleStateFragment<S : FeatureState> :
     MobbleAbstractFragment() {
 
     abstract val viewModel: MobbleStateViewModel<S>
@@ -28,21 +29,21 @@ abstract class MobbleStateFragment<S : MobbleStateViewModel.MobbleState> :
      * @see Loading
      *
      */
-    protected open val stateObserver: Observer<S> = Observer {
-
-        handleFailure(it.failure)
-
-        handleLoading(it.loading)
-
-        handleState(it)
+    protected open val stateObserver: Observer<MobbleStateViewModel.MobbleState<S>> = Observer {
+        handleCommonState(it.commonState)
+        handleFeatureState(it.featureState)
     }
 
+    protected open fun handleCommonState(commonState: MobbleStateViewModel.CommonState) {
+        handleFailure(commonState.failure)
+        handleLoading(commonState.loading)
+    }
 
     /**
      * Handle custom state
      * Implement this function in your fragment
      */
-    abstract fun handleState(state: S)
+    abstract fun handleFeatureState(featureState: S?)
 
     /**
      * Handle Failure state
@@ -61,7 +62,7 @@ abstract class MobbleStateFragment<S : MobbleStateViewModel.MobbleState> :
      * @see MobbleStateViewModel
      * @see defaultLoadingDialog
      */
-    protected open fun handleLoading(loading: Loading?){
+    protected open fun handleLoading(loading: Loading?) {
         when (loading) {
             Loading.NoLoading -> {
                 hideLoading()
