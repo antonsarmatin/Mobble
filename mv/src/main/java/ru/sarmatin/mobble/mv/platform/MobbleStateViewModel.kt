@@ -26,6 +26,9 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
     val viewState: LiveData<MobbleState<S>>
         get() = _viewState
 
+    fun getState() = _viewState.value
+    fun getCommonState() = _viewState.value?.commonState
+    fun getFeatureState() = _viewState.value?.featureState
 
     /**
      * Default common VM state
@@ -38,6 +41,13 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
     abstract val defaultFeatureState: S
 
     /**
+     * Init with default state
+     */
+    init {
+        _viewState.postValue(MobbleState(defaultCommonState, defaultFeatureState))
+    }
+
+    /**
      * State class for ViewModel
      * @param commonState
      * @param featureState
@@ -45,8 +55,7 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      * WARNING! State should not contain bulk data!
      *
      */
-
-    data class MobbleState<S: FeatureState>(val commonState: CommonState, val featureState: S?) {
+    data class MobbleState<S : FeatureState>(val commonState: CommonState, val featureState: S?) {
 
         fun withLoading(loading: Loading) = this.copy(
             commonState = commonState.copy(
