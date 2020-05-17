@@ -5,7 +5,7 @@ package ru.sarmatin.mobble.utils.consumablelivedata
  * Date: 2020-02-14
  * Project: SavedViewModels
  */
-class ConsumableValue<T>(private val data: T) {
+open class ConsumableValue<T>(private val data: T) {
 
     private var consumed = false
 

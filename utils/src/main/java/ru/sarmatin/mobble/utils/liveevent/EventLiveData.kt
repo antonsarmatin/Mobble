@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
  * Date: 2020-02-20
  * Project: Mobble
  */
-class EventLiveData<T> : MutableLiveData<T>() {
+open class EventLiveData<T> : MutableLiveData<T>() {
 
     private val observers = ArraySet<EventPendingObserver<in T>>()
 
