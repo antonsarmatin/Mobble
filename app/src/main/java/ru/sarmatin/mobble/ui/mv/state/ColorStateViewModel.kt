@@ -1,21 +1,18 @@
 package ru.sarmatin.mobble.ui.mv.state
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import ru.sarmatin.mobble.mv.navigation.NavAction
 import ru.sarmatin.mobble.mv.platform.MobbleStateViewModel
+import ru.sarmatin.mobble.mv.platform.state.FeatureState
 
 /**
  * Created by antonsarmatin
  * Date: 2020-04-17
  * Project: Mobble
  */
-class SomeStateViewModel(private val handle: SavedStateHandle) :
-    MobbleStateViewModel<SomeStateViewModel.ViewState>(handle) {
+class ColorStateViewModel(private val handle: SavedStateHandle) :
+    MobbleStateViewModel<ColorStateViewModel.ViewState>(handle) {
 
     private val _text1 = handle.getLiveData<String>("text1")
     val text1: LiveData<String>
@@ -35,24 +32,24 @@ class SomeStateViewModel(private val handle: SavedStateHandle) :
         _text3.value = "Blue..."
     }
 
-    override val defaultState: ViewState
-        get() = ViewState(ViewState.ColorType.COLOR_RED)
+    override val defaultFeatureState: ColorStateViewModel.ViewState
+        get() = ViewState.Red
 
-    data class ViewState(
-        val color: ColorType
-    ) : MobbleState() {
+    sealed class ViewState(): FeatureState(){
+        object Red: ViewState()
+        object Green: ViewState()
+        object Blue: ViewState()
+        data class Navigate(val color: ViewState?) : ViewState(), NavAction
+    }
 
-        enum class ColorType {
-            COLOR_RED,
-            COLOR_GREEN,
-            COLOR_BLUE
-        }
+    fun navigate(){
+
+       handleNavigation(ViewState.Navigate(getFeatureState()))
 
     }
 
-
-    fun setColorType(type: ViewState.ColorType) {
-        updateState(_viewState.value?.copy(color = type))
+    fun setColorType(type: ViewState) {
+        updateFeatureState(type)
     }
 
 

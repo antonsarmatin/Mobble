@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
  * Date: 2020-02-14
  * Project: SavedViewModels
  */
-class ConsumableLiveData<T> : MutableLiveData<ConsumableValue<T>>()
+open class ConsumableLiveData<T> : MutableLiveData<ConsumableValue<T>>()
 
 fun <T> ConsumableLiveData<T>.setValue(value: T) {
     this.value = ConsumableValue(value)

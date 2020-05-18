@@ -7,22 +7,23 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_some_state.*
-import kotlinx.android.synthetic.main.fragment_some_state.view.*
+import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.fragment_color.*
+import kotlinx.android.synthetic.main.fragment_color.view.*
 import ru.sarmatin.mobble.R
+import ru.sarmatin.mobble.mv.navigation.NavAction
 
 /**
  * Created by antonsarmatin
  * Date: 2020-05-01
  * Project: Mobble
  */
-typealias ColorType = SomeStateViewModel.ViewState.ColorType
 
-class SomeStateFragment : BaseFragment<SomeStateViewModel.ViewState>(){
+class ColorStateFragment : BaseFragment<ColorStateViewModel.ViewState>() {
 
-    override val viewModel: SomeStateViewModel by viewModels()
+    override val viewModel: ColorStateViewModel by viewModels()
 
-    override fun layoutId() = R.layout.fragment_some_state
+    override fun layoutId() = R.layout.fragment_color
 
     private lateinit var text: TextView
 
@@ -36,39 +37,50 @@ class SomeStateFragment : BaseFragment<SomeStateViewModel.ViewState>(){
         text = view.text
 
         btnColor1.setOnClickListener {
-            viewModel.setColorType(ColorType.COLOR_RED)
+            viewModel.setColorType(ColorStateViewModel.ViewState.Red)
         }
         btnColor2.setOnClickListener {
-            viewModel.setColorType(ColorType.COLOR_GREEN)
+            viewModel.setColorType(ColorStateViewModel.ViewState.Green)
         }
         btnColor3.setOnClickListener {
-            viewModel.setColorType(ColorType.COLOR_BLUE)
+            viewModel.setColorType(ColorStateViewModel.ViewState.Blue)
         }
+
+        btnNavigateToDetailt.setOnClickListener {
+            viewModel.navigate()
+        }
+
     }
 
-    override fun handleState(state: SomeStateViewModel.ViewState) {
+    override fun handleFeatureState(featureState: ColorStateViewModel.ViewState?) {
 
         viewModel.text1.removeObserver(textObserver)
         viewModel.text2.removeObserver(textObserver)
         viewModel.text3.removeObserver(textObserver)
-        when(state.color){
-            ColorType.COLOR_RED -> {
+        when (featureState) {
+            ColorStateViewModel.ViewState.Red -> {
                 setCardColor(R.color.card1)
                 viewModel.text1.observe(viewLifecycleOwner, textObserver)
             }
-            ColorType.COLOR_GREEN -> {
+            ColorStateViewModel.ViewState.Green -> {
                 setCardColor(R.color.card2)
                 viewModel.text2.observe(viewLifecycleOwner, textObserver)
             }
-            ColorType.COLOR_BLUE -> {
+            ColorStateViewModel.ViewState.Blue -> {
                 setCardColor(R.color.card3)
                 viewModel.text3.observe(viewLifecycleOwner, textObserver)
             }
         }
     }
 
+    override fun handleNavigationEvent(action: NavAction?) {
+        when(action){
+            is ColorStateViewModel.ViewState.Navigate -> findNavController().navigate(R.id.action_colorStateFragment_to_colorDetailFragment)
+        }
+    }
 
-    private fun setCardColor(@ColorRes color: Int){
+
+    private fun setCardColor(@ColorRes color: Int) {
         cardText.setCardBackgroundColor(ContextCompat.getColor(requireContext(), color))
     }
 }

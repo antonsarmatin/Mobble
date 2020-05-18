@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
  * Date: 2020-02-14
  * Project: SavedViewModels
  */
-class ConsumableObserver<T>(private val block: (T) -> Unit): Observer<ConsumableValue<T>> {
+open class ConsumableObserver<T>(private val block: (T) -> Unit): Observer<ConsumableValue<T>> {
 
     override fun onChanged(t: ConsumableValue<T>?) {
         t?.consume(block)

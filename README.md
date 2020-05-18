@@ -15,11 +15,12 @@ This framework is under construction!
 
 - [x] Create
 - [x] Mobble:Utils - Consumable LiveData, EventLiveData, etc.
-- [x] Mobble:MV - Base App classes with error and loading handling
+- [x] Mobble:MV - Base Base App classes with error and loading handlingApp classes with error and loading handling
+- [x] Mobble:MV - MVVM with State
+- [x] Mobble:MV - Navigation event handling
 - [ ] ...
-- [ ] Mobble:Utils - Small but useful utils
-- [ ] Mobble:MV - MVVM like UI layer pattern with Events and States(based on Android MVVM)
 - [ ] Mobble:Nav - Detached navigation based on MV State
+- [ ] Mobble:Utils - Small but useful utils
 - [ ] Mobble:Clean - CleanArchitecture library for fast implementation in new project
 
 # Mobble:Utils
@@ -233,43 +234,59 @@ See example application
 
 #### MobbleStateViewModel
 
-**MobbleState** parent class for custom States, contains common state fields: Loading, Failure
-**MobbleStateViewModel** contains **MobbleState** child
+**MobbleState** contains two substates: CommonState and FeatureState
 
 ```kotlin
 
-abstract class MobbleStateViewModel<S : MobbleStateViewModel.MobbleState>(handle: SavedStateHandle) :
+abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) :
     MobbleAbstractViewModel() {
     
-    protected val _viewState = handle.getLiveData<S>("viewState")
-    val viewState: LiveData<S>
+    protected val _viewState = handle.getLiveData<MobbleState<S>>("viewState")
+    val viewState: LiveData<MobbleState<S>>
         get() = _viewState
         
     //... 
     
-    abstract class MobbleState(
-    ) : Serializable {
+    data class MobbleState<S : FeatureState>(val commonState: CommonState, val featureState: S?) {
 
-        internal var _loading: Loading? = null
-        val loading: Loading?
-            get() = _loading
+        fun withLoading(loading: Loading) = this.copy(
+            commonState = commonState.copy(
+                loading = loading
+            )
+        )
 
-        internal var _failure: Failure? = null
-        val failure: Failure?
-            get() = _failure
-
+        fun withFailure(failure: Failure?, abortLoading: Boolean = true) =
+            if (abortLoading) {
+                this.copy(
+                    commonState = commonState.copy(
+                        loading = Loading.NoLoading,
+                        failure = failure
+                    )
+                )
+            } else {
+                this.copy(
+                    commonState = commonState.copy(
+                        failure = failure
+                    )
+                )
+            }
 
     }
+    
+    data class CommonState(val loading: Loading?, val failure: Failure?)
     
     //...
    
     
 }
 
+abstract class FeatureState
+
 ```
 
-Extends from **MobbleStateViewModel** and implement your custom state:
+Extends from **MobbleStateViewModel** and implement your custom FeatureState,
 **IMPORTANT! WARNING! State should not contain bulk data!**
+You can use sealed classes:
 
 ```kotlin
 
@@ -278,26 +295,48 @@ class SomeStateViewModel(private val handle: SavedStateHandle) :
 
     //LiveData fields here
 
-    override val defaultState: ViewState
-        get() = ViewState(ViewState.ColorType.COLOR_RED)
+    override val defaultFeatureState: ColorStateViewModel.ViewState
+        get() = ViewState.Red
 
     //Here your custom state with some fields
     //IMPORTANT! WARNING! State should not contain bulk data!
-    data class ViewState(
-        val color: ColorType
-    ) : MobbleState() {
-
-        enum class ColorType {
-            COLOR_RED,
-            COLOR_GREEN,
-            COLOR_BLUE
-        }
-
+     sealed class ViewState(): FeatureState(){
+        object Red: ViewState()
+        object Green: ViewState()
+        object Blue: ViewState()
     }
 
 
-    fun setColorType(type: ViewState.ColorType) {
-        updateState(_viewState.value?.copy(color = type))
+    fun setColorType(type: ViewState) {
+        updateFeatureState(type)
+    }
+
+
+}
+
+```
+
+Or you can define different classes:
+
+```kotlin
+
+class SomeStateViewModel(private val handle: SavedStateHandle) :
+    MobbleStateViewModel<FeatureState>(handle) {
+
+    //LiveData fields here
+
+    override val defaultFeatureState: ColorStateViewModel.ViewState
+        get() = ViewState.Red
+
+    //Here your custom state with some fields
+    //IMPORTANT! WARNING! State should not contain bulk data!
+     data class Red: FeatureState
+     data class Green: FeatureState
+     data class Blue: FeatureState
+
+
+    fun setColorType(type: ViewState) {
+        updateFeatureState(type)
     }
 
 
@@ -308,7 +347,7 @@ class SomeStateViewModel(private val handle: SavedStateHandle) :
 #### MobbleStateFragment
 
 ```kotlin
-abstract class MobbleStateFragment<S : MobbleStateViewModel.MobbleState> :
+abstract class MobbleStateFragment<S : FeatureState> :
     MobbleAbstractFragment()
     
     abstract val viewModel: MobbleStateViewModel<S>
@@ -365,10 +404,71 @@ This function return an instance of AbstractLoadingDialog child.
 Implement `MobbleStateFragment.handleFailure` in your fragment (you can implement default handling in base fragment)
 
 
+## Handle navigation event
+
+MobbleAbstractViewModel contains NavigationEvent(LiveData) field that consumes NavActions and observed by NavigationObserver in MobbleAbstractFragment.  
+You can post your NavAction to this field and handle it in fragment to be able to navigate to other screens.
+*It works in Common and Stated Mobble MVVM.*
+
+```kotlin
+abstract class MobbleAbstractViewModel : ViewModel() {
+
+    private val _navigationEvent = MutableNavigationEvent()
+    val navigationEvent: NavigationEvent
+        get() = _navigationEvent
+
+    //...
+
+    protected fun handleNavigation(navAction: NavAction) = _navigationEvent.postValue(navAction)
+
+}
+
+abstract class MobbleAbstractFragment: Fragment() {
+
+    protected val navigationObserver: Observer<NavAction> = Observer {
+        handleNavigationEvent(it)
+    }
+    
+    //...
+    
+    protected open fun handleNavigationEvent(action: NavAction?){
+        throw NotImplementedError(
+            "handleNavigationevent(action: NavAction?) - You must override this function in order to be able handle navigation event"
+        )
+    }
+
+
+}
+
+```
+
+**You must override `handleNavigationEvent` to be able handle NavAction from ViewModel**
+
+Example:
+```kotlin
+
+    sealed class ViewState(): FeatureState(){
+        object Red: ViewState()
+        object Green: ViewState()
+        object Blue: ViewState()
+        data class Navigate(val color: ViewState?) : ViewState(), NavAction
+    }
+    
+    //...
+    
+    override fun handleNavigationEvent(action: NavAction?) {
+        when(action){
+            is ColorStateViewModel.ViewState.Navigate -> findNavController().navigate(R.id.action_colorStateFragment_to_colorDetailFragment)
+        }
+    }
+
+```
 
 More info -> see source code and example app
 
 # Mobble:Nav
+State based navigation detached from UI.
+
 Under construction
 
 # Mobble:Clean
@@ -379,6 +479,9 @@ Under construction
 - MV Common: Loading handling feature
 ## 1.0.4
 - MV Stated: ViewModel and Fragment
+## 1.1.0
+- MV: Navigation event handling feature
+- MV Stated: State api changed
 
 
 
