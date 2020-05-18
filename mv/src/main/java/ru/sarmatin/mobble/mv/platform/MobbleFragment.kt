@@ -64,12 +64,13 @@ abstract class MobbleFragment : MobbleAbstractFragment() {
         super.onResume()
         viewModel.failure.observe(viewLifecycleOwner, failureObserver)
         viewModel.loading.observe(viewLifecycleOwner, loadingObserver)
+        viewModel.navigationEvent.observe(viewLifecycleOwner, navigationObserver)
     }
 
     override fun onPause() {
         viewModel.failure.removeObserver(failureObserver)
         viewModel.loading.removeObserver(loadingObserver)
-
+        viewModel.navigationEvent.removeObserver(navigationObserver)
         super.onPause()
     }
 
