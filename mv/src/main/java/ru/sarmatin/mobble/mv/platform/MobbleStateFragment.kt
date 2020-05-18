@@ -84,10 +84,12 @@ abstract class MobbleStateFragment<S : FeatureState> :
     override fun onResume() {
         super.onResume()
         viewModel.viewState.observe(viewLifecycleOwner, stateObserver)
+        viewModel.navigationEvent.observe(viewLifecycleOwner, navigationObserver)
     }
 
     override fun onPause() {
         viewModel.viewState.removeObserver(stateObserver)
+        viewModel.navigationEvent.removeObserver(navigationObserver)
         super.onPause()
     }
 

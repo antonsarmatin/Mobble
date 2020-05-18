@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
 import ru.sarmatin.mobble.mv.common.loading.Loading
 import ru.sarmatin.mobble.mv.common.loading.dialog.AbstractLoadingDialog
 import ru.sarmatin.mobble.mv.common.loading.dialog.DefaultSpinnerLoadingDialog
+import ru.sarmatin.mobble.mv.navigation.NavAction
 
 /**
  * Created by antonsarmatin
@@ -27,6 +30,14 @@ abstract class MobbleAbstractFragment : Fragment() {
      * Layout resourse Id that would be inflated
      */
     abstract fun layoutId(): Int
+
+    /**
+     * Navigation Event Observer
+     * @see MobbleAbstractFragment.handleNavigationEvent
+     */
+    protected val navigationObserver: Observer<NavAction> = Observer {
+        handleNavigationEvent(it)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,6 +108,19 @@ abstract class MobbleAbstractFragment : Fragment() {
     }
 
     fun hideLoading() = findSpinnerFragment()?.dismiss()
+
+    /**
+     * Override this function to implement navigation event handling
+     * Function called by NavigationObserver
+     *
+     * @see navigationObserver
+     * @see NavAction
+     */
+    protected open fun handleNavigationEvent(action: NavAction?){
+        throw NotImplementedError(
+            "handleNavigationevent(action: NavAction?) - You must override this function in order to be able handle navigation event"
+        )
+    }
 
     companion object {
 
