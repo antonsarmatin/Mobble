@@ -2,6 +2,7 @@ package ru.sarmatin.mobble.ui.mv.state
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
+import ru.sarmatin.mobble.mv.navigation.NavAction
 import ru.sarmatin.mobble.mv.platform.MobbleStateViewModel
 import ru.sarmatin.mobble.mv.platform.state.FeatureState
 
@@ -10,8 +11,8 @@ import ru.sarmatin.mobble.mv.platform.state.FeatureState
  * Date: 2020-04-17
  * Project: Mobble
  */
-class SomeStateViewModel(private val handle: SavedStateHandle) :
-    MobbleStateViewModel<SomeStateViewModel.ViewState>(handle) {
+class ColorStateViewModel(private val handle: SavedStateHandle) :
+    MobbleStateViewModel<ColorStateViewModel.ViewState>(handle) {
 
     private val _text1 = handle.getLiveData<String>("text1")
     val text1: LiveData<String>
@@ -31,16 +32,21 @@ class SomeStateViewModel(private val handle: SavedStateHandle) :
         _text3.value = "Blue..."
     }
 
-    override val defaultFeatureState: SomeStateViewModel.ViewState
+    override val defaultFeatureState: ColorStateViewModel.ViewState
         get() = ViewState.Red
 
     sealed class ViewState(): FeatureState(){
         object Red: ViewState()
         object Green: ViewState()
         object Blue: ViewState()
+        data class Navigate(val color: ViewState?) : ViewState(), NavAction
     }
 
+    fun navigate(){
 
+       handleNavigation(ViewState.Navigate(getFeatureState()))
+
+    }
 
     fun setColorType(type: ViewState) {
         updateFeatureState(type)

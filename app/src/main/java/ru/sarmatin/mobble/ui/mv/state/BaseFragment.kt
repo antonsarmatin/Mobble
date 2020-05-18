@@ -4,6 +4,7 @@ import ru.sarmatin.mobble.R
 import ru.sarmatin.mobble.alert
 import ru.sarmatin.mobble.mv.platform.MobbleStateFragment
 import ru.sarmatin.mobble.mv.platform.MobbleStateViewModel
+import ru.sarmatin.mobble.mv.platform.state.FeatureState
 import ru.sarmatin.mobble.utils.failure.Failure
 
 /**
@@ -11,8 +12,7 @@ import ru.sarmatin.mobble.utils.failure.Failure
  * Date: 2020-05-03
  * Project: Mobble
  */
-abstract class BaseFragment<S : MobbleStateViewModel.MobbleState> : MobbleStateFragment<S>() {
-
+abstract class BaseFragment<S : FeatureState> : MobbleStateFragment<S>() {
 
     override fun handleFailure(failure: Failure?) {
         //Handle failure here
@@ -20,4 +20,5 @@ abstract class BaseFragment<S : MobbleStateViewModel.MobbleState> : MobbleStateF
             alert(getString(R.string.error_message))
         }
     }
+
 }

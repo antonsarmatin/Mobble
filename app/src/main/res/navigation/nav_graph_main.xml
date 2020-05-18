@@ -15,7 +15,7 @@
             app:destination="@id/someScreenFragment" />
         <action
             android:id="@+id/action_mainFragment_to_someStateFragment"
-            app:destination="@id/someStateFragment" />
+            app:destination="@id/colorStateFragment" />
     </fragment>
     <fragment
         android:id="@+id/consumableParentFragment"
@@ -34,9 +34,17 @@
         android:name="ru.sarmatin.mobble.ui.mv.SomeScreenFragment"
         android:label="SomeScreenFragment" />
     <fragment
-        android:id="@+id/someStateFragment"
-        android:name="ru.sarmatin.mobble.ui.mv.state.SomeStateFragment"
-        android:label="SomeStateFragment" />
+        android:id="@+id/colorStateFragment"
+        android:name="ru.sarmatin.mobble.ui.mv.state.ColorStateFragment"
+        android:label="ColorStateFragment" >
+        <action
+            android:id="@+id/action_colorStateFragment_to_colorDetailFragment"
+            app:destination="@id/colorDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/colorDetailFragment"
+        android:name="ru.sarmatin.mobble.ui.mv.state.detail.ColorDetailFragment"
+        android:label="ColorDetailFragment" />
 
 
 </navigation>
