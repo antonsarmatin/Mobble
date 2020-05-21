@@ -3,6 +3,7 @@ package ru.sarmatin.mobble.mv.platform
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import ru.sarmatin.mobble.mv.common.loading.Loading
+import ru.sarmatin.mobble.mv.navigation.NavAction
 import ru.sarmatin.mobble.mv.platform.state.FeatureState
 import ru.sarmatin.mobble.utils.failure.Failure
 
@@ -22,7 +23,7 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      * @see MobbleState
      * @see SavedStateHandle
      */
-    protected val _viewState = handle.getLiveData<MobbleState<S>>("viewState")
+    private val _viewState = handle.getLiveData<MobbleState<S>>("viewState")
     val viewState: LiveData<MobbleState<S>>
         get() = _viewState
 
@@ -123,6 +124,8 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      * Update state
      */
     protected fun updateFeatureState(state: S?) {
+        if (state is NavAction) handleNavigation(state)
+
         val newState = _viewState.value?.copy(featureState = state)
         _viewState.postValue(newState)
     }
