@@ -9,7 +9,6 @@ import ru.sarmatin.mobble.mv.platform.MobbleApplication
  */
 abstract class MobbleNavApplication : MobbleApplication() {
 
-
-
+    //WIP
 
 }

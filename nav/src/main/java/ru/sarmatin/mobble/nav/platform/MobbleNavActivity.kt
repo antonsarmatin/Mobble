@@ -13,5 +13,6 @@ import kotlin.reflect.KClass
  */
 abstract class MobbleNavActivity() : MobbleActivity(), NavHost {
 
+    //WIP
 
 }
