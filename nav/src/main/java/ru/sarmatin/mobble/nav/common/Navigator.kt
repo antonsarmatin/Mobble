@@ -1,5 +1,6 @@
 package ru.sarmatin.mobble.nav.common
 
+import android.util.Log
 import androidx.lifecycle.*
 import ru.sarmatin.mobble.mv.navigation.NavAction
 import ru.sarmatin.mobble.mv.navigation.NavigationEvent
@@ -24,17 +25,17 @@ class Navigator private constructor(
     private var navigationEvent: NavigationEvent? = null
 
     private var navigationObserver: Observer<NavAction> = Observer {
-
+        onAction(it)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    private fun onStart() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    private fun onResume() {
         navigationEvent?.observe(lifecycleOwner, navigationObserver)
     }
 
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    private fun onStop() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    private fun onPause() {
         navigationEvent?.removeObserver(navigationObserver)
     }
 
@@ -44,7 +45,7 @@ class Navigator private constructor(
     }
 
     private fun onAction(navAction: NavAction){
-        host.getRouter().onEvent(navAction)
+        host.router.onEvent(navAction)
     }
 
     companion object {
