@@ -9,6 +9,8 @@ import ru.sarmatin.mobble.nav.router.Router
  */
 interface NavHost {
 
-   fun getRouter(): Router
+   val router: Router
+
+   val navigator: Navigator
 
 }
