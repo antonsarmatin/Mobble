@@ -31,6 +31,8 @@ abstract class MobbleAbstractFragment : Fragment() {
      */
     abstract fun layoutId(): Int
 
+    abstract val viewModel: MobbleAbstractViewModel
+
     /**
      * Navigation Event Observer
      * @see MobbleAbstractFragment.handleNavigationEvent

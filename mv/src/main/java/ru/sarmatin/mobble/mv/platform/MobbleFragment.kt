@@ -20,7 +20,7 @@ import ru.sarmatin.mobble.utils.failure.Failure
  */
 abstract class MobbleFragment : MobbleAbstractFragment() {
 
-    abstract val viewModel: MobbleViewModel
+    abstract override val viewModel: MobbleViewModel
 
     /**
      * Default failure observer for failure handling from MobbleViewModel

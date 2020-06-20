@@ -1,6 +1,6 @@
 package ru.sarmatin.mobble.nav.platform
 
-import android.app.Activity
+import ru.sarmatin.mobble.mv.platform.MobbleAbstractFragment
 import ru.sarmatin.mobble.mv.platform.MobbleActivity
 import ru.sarmatin.mobble.mv.platform.MobbleStateFragment
 import ru.sarmatin.mobble.mv.platform.state.FeatureState
@@ -10,7 +10,7 @@ import ru.sarmatin.mobble.nav.router.Router
 
 /**
  * Created by antonsarmatin
- * Date: 25/05/2020
+ * Date: 20/06/2020
  * Project: Mobble
  */
 
@@ -21,7 +21,7 @@ import ru.sarmatin.mobble.nav.router.Router
  * Calling this on a Activity that is not a [NavHost] or within a [NavHost]
  * will result in an [IllegalStateException]
  */
-fun <S : FeatureState> MobbleStateFragment<S>.findRouter(): Router {
+fun MobbleAbstractFragment.findRouter(): Router {
     if (activity is NavHost) {
         return (activity as NavHost).router
     } else throw IllegalStateException("${activity?.javaClass?.simpleName} is not NavHost")
@@ -34,7 +34,7 @@ fun <S : FeatureState> MobbleStateFragment<S>.findRouter(): Router {
  * Calling this on a Activity that is not a [NavHost] or within a [NavHost]
  * will result in an [IllegalStateException]
  */
-fun <S : FeatureState> MobbleStateFragment<S>.findNavigator(): Navigator {
+fun MobbleAbstractFragment.findNavigator(): Navigator {
     if (activity is NavHost) {
         return (activity as NavHost).navigator
     } else throw IllegalStateException("${activity?.javaClass?.simpleName} is not NavHost")
@@ -47,11 +47,10 @@ fun <S : FeatureState> MobbleStateFragment<S>.findNavigator(): Navigator {
  * Calling this on a Activity that is not a [NavHost] or within a [NavHost]
  * will result in an [IllegalStateException]
  */
-fun <S : FeatureState> MobbleStateFragment<S>.attachToNavigator() {
+fun MobbleAbstractFragment.attachToNavigator() {
     if (activity is NavHost) {
         this.findNavigator().attachNavigationEventOwner(viewModel)
         this.lifecycle.addObserver(findNavigator())
 
     } else throw IllegalStateException("${activity?.javaClass?.simpleName} is not NavHost")
 }
-
