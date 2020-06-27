@@ -1,5 +1,6 @@
 package ru.sarmatin.mobble.mv.navigation
 
+import androidx.annotation.MainThread
 import ru.sarmatin.mobble.utils.liveevent.EventLiveData
 
 /**
@@ -13,12 +14,15 @@ class MutableNavigationEvent : NavigationEvent {
 
     constructor(value: NavAction?): super()
 
-    public override fun postValue(value: NavAction?) {
-        super.postValue(value)
+    @MainThread
+    public override fun setValue(value: NavAction?) {
+        observers.forEach { it.newValue() }
+        super.setValue(value)
     }
 
-    public override fun setValue(value: NavAction?) {
-        super.setValue(value)
+    public override fun postValue(value: NavAction?) {
+        observers.forEach { it.newValue() }
+        super.postValue(value)
     }
 
 }

@@ -31,6 +31,8 @@ abstract class MobbleAbstractFragment : Fragment() {
      */
     abstract fun layoutId(): Int
 
+    abstract val viewModel: MobbleAbstractViewModel
+
     /**
      * Navigation Event Observer
      * @see MobbleAbstractFragment.handleNavigationEvent
@@ -117,9 +119,7 @@ abstract class MobbleAbstractFragment : Fragment() {
      * @see NavAction
      */
     protected open fun handleNavigationEvent(action: NavAction?){
-        throw NotImplementedError(
-            "handleNavigationevent(action: NavAction?) - You must override this function in order to be able handle navigation event"
-        )
+
     }
 
     companion object {

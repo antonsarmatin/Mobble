@@ -18,7 +18,7 @@ import ru.sarmatin.mobble.utils.failure.Failure
 abstract class MobbleStateFragment<S : FeatureState> :
     MobbleAbstractFragment() {
 
-    abstract val viewModel: MobbleStateViewModel<S>
+    abstract override val viewModel: MobbleStateViewModel<S>
 
     /**
      * Default State observer
