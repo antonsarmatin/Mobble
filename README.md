@@ -469,7 +469,7 @@ More info -> see source code and example app
 # Mobble:Nav
 State based navigation detached from UI.
 
-Under construction
+Released, readme is under construction
 
 # Mobble:Clean
 Under construction
