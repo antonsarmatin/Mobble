@@ -57,6 +57,8 @@ abstract class MobbleAbstractViewModel : ViewModel() {
      */
     protected abstract fun handleFailure(failure: Failure, abortLoading: Boolean = true)
 
-    protected fun handleNavigation(navAction: NavAction) = _navigationEvent.postValue(navAction)
+    protected fun handleNavigation(navAction: NavAction) {
+        _navigationEvent.value = navAction
+    }
 
 }
