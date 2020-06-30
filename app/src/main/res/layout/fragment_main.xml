@@ -21,19 +21,15 @@
             android:id="@+id/btnConsumable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_text_consumable"/>
+            android:text="@string/btn_text_consumable"
+            android:visibility="gone" />
 
         <Button
-            android:id="@+id/btnMv"
+            android:id="@+id/btnNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_text_mv"/>
+            android:text="@string/btn_text_navigation" />
 
-        <Button
-            android:id="@+id/btnMvState"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_text_mv_state"/>
 
     </LinearLayout>
 

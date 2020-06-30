@@ -10,4 +10,7 @@
     <string name="error_message">Some error happened</string>
     <string name="btn_navigate_to_detail_color">More detail</string>
     <string name="text_color_detail_fragment">ColorDetailFragment</string>
+    <string name="btn_text_navigation">Framework - Nav + Presentation</string>
+    <string name="text_empty_books_list">Нет данных о книгах</string>
+    <string name="failure_refresh">Ошибка обновления списка книг</string>
 </resources>
