@@ -482,6 +482,9 @@ Under construction
 ## 1.1.0
 - MV: Navigation event handling feature
 - MV Stated: State api changed
+## 1.2.0
+- Nav: Release
+- MV: State initializing and processing fixes
 
 
 
