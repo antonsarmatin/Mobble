@@ -25,7 +25,7 @@ allprojects {
 
     }
     project.ext {
-        mobbleVersion = '1.1.0'
+        mobbleVersion = '1.2.0'
     }
 }
 

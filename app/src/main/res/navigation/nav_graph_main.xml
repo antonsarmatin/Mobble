@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph_main.xml"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main.xml"
     app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="ru.sarmatin.mobble.MainFragment"
-        android:label="MainFragment" >
+        android:label="MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_consumableParentFragment"
             app:destination="@id/consumableParentFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_someScreenFragment"
-            app:destination="@id/someScreenFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_someStateFragment"
-            app:destination="@id/colorStateFragment" />
+            android:id="@+id/action_mainFragment_to_navigationActivity"
+            app:destination="@id/navigationActivity" />
     </fragment>
     <fragment
         android:id="@+id/consumableParentFragment"
         android:name="ru.sarmatin.mobble.ui.consumable.ConsumableParentFragment"
-        android:label="ConsumableParentFragment" >
+        android:label="ConsumableParentFragment">
         <action
             android:id="@+id/action_consumableParentFragment_to_consumableChildFragment"
             app:destination="@id/consumableChildFragment" />
@@ -29,22 +28,11 @@
         android:id="@+id/consumableChildFragment"
         android:name="ru.sarmatin.mobble.ui.consumable.ConsumableChildFragment"
         android:label="ConsumableChildFragment" />
-    <fragment
-        android:id="@+id/someScreenFragment"
-        android:name="ru.sarmatin.mobble.ui.mv.SomeScreenFragment"
-        android:label="SomeScreenFragment" />
-    <fragment
-        android:id="@+id/colorStateFragment"
-        android:name="ru.sarmatin.mobble.ui.mv.state.ColorStateFragment"
-        android:label="ColorStateFragment" >
-        <action
-            android:id="@+id/action_colorStateFragment_to_colorDetailFragment"
-            app:destination="@id/colorDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/colorDetailFragment"
-        android:name="ru.sarmatin.mobble.ui.mv.state.detail.ColorDetailFragment"
-        android:label="ColorDetailFragment" />
+    <activity
+        android:id="@+id/navigationActivity"
+        android:name="ru.sarmatin.mobble.ui.nav.NavigationActivity"
+        android:label="activity_navigation"
+        tools:layout="@layout/activity_navigation" />
 
 
 </navigation>

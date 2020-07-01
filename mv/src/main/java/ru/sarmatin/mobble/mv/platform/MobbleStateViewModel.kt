@@ -45,7 +45,7 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      * Init with default state
      */
     init {
-        _viewState.postValue(MobbleState(defaultCommonState, defaultFeatureState))
+        _viewState.value = MobbleState(defaultCommonState, defaultFeatureState)
     }
 
     /**
@@ -92,7 +92,7 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      */
     override fun handleFailure(failure: Failure, abortLoading: Boolean) {
         val newState = _viewState.value?.withFailure(failure, abortLoading)
-        _viewState.postValue(newState)
+        _viewState.value = newState
     }
 
     /**
@@ -101,7 +101,7 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      */
     override fun handleLoading(loading: Loading) {
         val newState = _viewState.value?.withLoading(loading)
-        _viewState.postValue(newState)
+        _viewState.value = newState
     }
 
 
@@ -130,7 +130,7 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
         }
 
         val newState = _viewState.value?.copy(featureState = state)
-        _viewState.postValue(newState)
+        _viewState.value = newState
     }
 
 }
