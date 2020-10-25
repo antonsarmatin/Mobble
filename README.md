@@ -6,7 +6,7 @@ Mobble framework - CleanArch, Navigation detached form UI, MVVM like Presentatio
 
 1. Mobble:Utils [ ![Download](https://api.bintray.com/packages/antonsarmatin/Mobble/utils/images/download.svg) ](https://bintray.com/antonsarmatin/Mobble/utils/_latestVersion)
 2. Mobble:MV [ ![Download](https://api.bintray.com/packages/antonsarmatin/Mobble/mv/images/download.svg) ](https://bintray.com/antonsarmatin/Mobble/mv/_latestVersion)
-3. Mobble:Nav
+3. Mobble:Nav [ ![Download](https://api.bintray.com/packages/antonsarmatin/Mobble/nav/images/download.svg) ](https://bintray.com/antonsarmatin/Mobble/nav/_latestVersion)
 4. Mobble:Clean
 
 ## Plans for the future
@@ -18,8 +18,9 @@ This framework is under construction!
 - [x] Mobble:MV - Base Base App classes with error and loading handlingApp classes with error and loading handling
 - [x] Mobble:MV - MVVM with State
 - [x] Mobble:MV - Navigation event handling
-- [ ] ...
+- [ ] ... In Progress
 - [ ] Mobble:Nav - Detached navigation based on MV State
+- [ ] ...
 - [ ] Mobble:Utils - Small but useful utils
 - [ ] Mobble:Clean - CleanArchitecture library for fast implementation in new project
 
@@ -470,6 +471,20 @@ More info -> see source code and example app
 State based navigation detached from UI.
 
 Released, readme is under construction
+
+### Add to your project
+
+To start using this part, add these lines to the build.gradle of your project:
+
+```xml
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'ru.sarmatin.mobble:nav:latest_version'
+}
+```
 
 # Mobble:Clean
 Under construction
