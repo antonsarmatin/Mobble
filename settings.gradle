@@ -1,2 +1,2 @@
-include ':app', ':utils', ':mv', ':nav', ':clean'
+include ':utils', ':mv', ':nav', ':clean'
 rootProject.name='Mobble'
