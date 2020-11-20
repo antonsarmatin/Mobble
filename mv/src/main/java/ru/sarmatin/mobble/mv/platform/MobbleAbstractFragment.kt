@@ -2,11 +2,8 @@ package ru.sarmatin.mobble.mv.platform
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
@@ -24,12 +21,7 @@ import ru.sarmatin.mobble.mv.navigation.NavAction
 /**
  * Root Fragment class
  */
-abstract class MobbleAbstractFragment : Fragment() {
-
-    /**
-     * Layout resourse Id that would be inflated
-     */
-    abstract fun layoutId(): Int
+abstract class MobbleAbstractFragment(@LayoutRes layout: Int) : Fragment(layout) {
 
     abstract val viewModel: MobbleAbstractViewModel
 
@@ -41,12 +33,6 @@ abstract class MobbleAbstractFragment : Fragment() {
         handleNavigationEvent(it)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View =
-        inflater.inflate(layoutId(), container, false)
 
     override fun onPause() {
 

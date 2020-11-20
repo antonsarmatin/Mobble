@@ -1,5 +1,6 @@
 package ru.sarmatin.mobble.mv.platform
 
+import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
 import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
 import ru.sarmatin.mobble.mv.common.loading.Loading
@@ -15,8 +16,8 @@ import ru.sarmatin.mobble.utils.failure.Failure
  * Project: Mobble
  */
 
-abstract class MobbleStateFragment<S : FeatureState> :
-    MobbleAbstractFragment() {
+abstract class MobbleStateFragment<S : FeatureState>(@LayoutRes layout: Int) :
+    MobbleAbstractFragment(layout) {
 
     abstract override val viewModel: MobbleStateViewModel<S>
 

@@ -18,9 +18,7 @@ import ru.sarmatin.mobble.utils.failure.Failure
  * Date: 22/05/2020
  * Project: Mobble
  */
-class BookDetailFragment : MobbleStateFragment<BookDetailViewModel.ViewState>() {
-
-    override fun layoutId() = R.layout.fragment_book_detail
+class BookDetailFragment : MobbleStateFragment<BookDetailViewModel.ViewState>(R.layout.fragment_book_detail) {
 
     override val viewModel: BookDetailViewModel by viewModels()
 

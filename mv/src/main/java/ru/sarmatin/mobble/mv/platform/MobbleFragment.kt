@@ -1,11 +1,6 @@
 package ru.sarmatin.mobble.mv.platform
 
-import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
+import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
 import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
 import ru.sarmatin.mobble.mv.common.loading.Loading
@@ -18,7 +13,7 @@ import ru.sarmatin.mobble.utils.failure.Failure
  * Date: 2020-02-25
  * Project: Mobble
  */
-abstract class MobbleFragment : MobbleAbstractFragment() {
+abstract class MobbleFragment(@LayoutRes layout: Int) : MobbleAbstractFragment(layout) {
 
     abstract override val viewModel: MobbleViewModel
 

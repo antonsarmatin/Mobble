@@ -25,12 +25,10 @@ import ru.sarmatin.mobble.utils.failure.Failure
  * Date: 22/05/2020
  * Project: Mobble
  */
-class BookListFragment : MobbleStateFragment<BookListViewModel.ViewState>(),
+class BookListFragment : MobbleStateFragment<BookListViewModel.ViewState>(R.layout.fragment_book_list),
     BookListAdapter.ItemClickListener {
 
     override val viewModel: BookListViewModel by viewModels()
-
-    override fun layoutId() = R.layout.fragment_book_list
 
     private lateinit var adapter: BookListAdapter
 
