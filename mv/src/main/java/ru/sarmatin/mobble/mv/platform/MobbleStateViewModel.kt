@@ -58,11 +58,22 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      */
     data class MobbleState<S : FeatureState>(val commonState: CommonState, val featureState: S?) {
 
-        fun withLoading(loading: Loading) = this.copy(
-            commonState = commonState.copy(
-                loading = loading
-            )
-        )
+        fun withLoading(loading: Loading, abortError: Boolean = true) =
+            if (abortError) {
+                this.copy(
+                    commonState = commonState.copy(
+                        loading = loading,
+                        failure = null
+//                       failure = Failure.Ignore
+                    )
+                )
+            } else {
+                this.copy(
+                    commonState = commonState.copy(
+                        loading = loading
+                    )
+                )
+            }
 
         fun withFailure(failure: Failure?, abortLoading: Boolean = true) =
             if (abortLoading) {
@@ -99,7 +110,7 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      * Handles Loading object and modify loading state of ViewModel State
      * @see Loading
      */
-    override fun handleLoading(loading: Loading) {
+    override fun handleLoading(loading: Loading, abortError: Boolean) {
         val newState = _viewState.value?.withLoading(loading)
         _viewState.value = newState
     }
@@ -112,11 +123,11 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      * @see Loading
      * @see defaultLoading
      */
-    override fun handleLoading(isLoading: Boolean) {
+    override fun handleLoading(isLoading: Boolean, abortError: Boolean) {
         if (isLoading) {
-            handleLoading(defaultLoading)
+            handleLoading(defaultLoading, abortError)
         } else {
-            handleLoading(Loading.NoLoading)
+            handleLoading(Loading.NoLoading, abortError)
         }
     }
 

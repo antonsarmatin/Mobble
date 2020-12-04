@@ -19,4 +19,7 @@ sealed class Failure {
 
     /** * This failure may be ignored.*/
     object Ignore: Failure()
+
+    /** Stub */
+    object NoFailure: Failure()
 }

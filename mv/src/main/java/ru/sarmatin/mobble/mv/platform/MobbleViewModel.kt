@@ -28,7 +28,7 @@ abstract class MobbleViewModel(handle: SavedStateHandle) : MobbleAbstractViewMod
      * Handles Failure object and modify failure state of ViewModel
      */
     override fun handleFailure(failure: Failure, abortLoading: Boolean) {
-        handleLoading(Loading.NoLoading)
+        handleLoading(Loading.NoLoading, false)
         _failure.postValue(failure)
         if (abortLoading)
             _loading.postValue(Loading.NoLoading)
@@ -38,7 +38,8 @@ abstract class MobbleViewModel(handle: SavedStateHandle) : MobbleAbstractViewMod
      * Handles Loading object and modify loading state of ViewModel
      * @see Loading
      */
-    override fun handleLoading(loading: Loading) {
+    override fun handleLoading(loading: Loading, abortError: Boolean) {
+        if (abortError) _failure.postValue(null)
         _loading.postValue(loading)
     }
 
@@ -49,8 +50,9 @@ abstract class MobbleViewModel(handle: SavedStateHandle) : MobbleAbstractViewMod
      * @see Loading
      * @see defaultLoading
      */
-    override fun handleLoading(isLoading: Boolean) {
-        if (isLoading) _loading.postValue(defaultLoading) else _loading.postValue(Loading.NoLoading)
+    override fun handleLoading(isLoading: Boolean, abortError: Boolean) {
+        val loading = if (isLoading) defaultLoading as Loading else Loading.NoLoading
+        handleLoading(loading, abortError)
     }
 
 

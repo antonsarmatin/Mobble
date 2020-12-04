@@ -48,8 +48,8 @@ abstract class MobbleAbstractViewModel : ViewModel() {
      * Handles Loading object
      * @see Loading
      */
-    protected abstract fun handleLoading(loading: Loading)
-    protected abstract fun handleLoading(isLoading: Boolean)
+    protected abstract fun handleLoading(loading: Loading, abortError: Boolean = true)
+    protected abstract fun handleLoading(isLoading: Boolean, abortError: Boolean = true)
 
 
     /**
