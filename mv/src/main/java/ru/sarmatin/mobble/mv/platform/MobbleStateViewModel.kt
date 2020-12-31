@@ -136,13 +136,18 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
     /**
      * Update state
      */
-    protected fun updateFeatureState(state: S?) {
+    protected fun updateFeatureState(state: S?, abortError: Boolean = false) {
         if (state is NavAction) {
             handleNavigation(state)
             return
         }
 
-        val newState = _viewState.value?.copy(featureState = state)
+
+        val newState = if (abortError) {
+            _viewState.value?.copy(featureState = state)?.withFailure(null)
+        } else {
+            _viewState.value?.copy(featureState = state)
+        }
         _viewState.value = newState
     }
 
