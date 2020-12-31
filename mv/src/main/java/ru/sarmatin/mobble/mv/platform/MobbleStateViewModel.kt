@@ -1,11 +1,13 @@
 package ru.sarmatin.mobble.mv.platform
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import ru.sarmatin.mobble.mv.common.loading.Loading
 import ru.sarmatin.mobble.mv.navigation.NavAction
 import ru.sarmatin.mobble.mv.platform.state.FeatureState
 import ru.sarmatin.mobble.utils.failure.Failure
+import java.io.Serializable
 
 
 /**
@@ -21,9 +23,8 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
     /**
      * State LiveData field
      * @see MobbleState
-     * @see SavedStateHandle
      */
-    private val _viewState = handle.getLiveData<MobbleState<S>>("viewState")
+    private val _viewState = MutableLiveData<MobbleState<S>>()
     val viewState: LiveData<MobbleState<S>>
         get() = _viewState
 
@@ -56,7 +57,8 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
      * WARNING! State should not contain bulk data!
      *
      */
-    data class MobbleState<S : FeatureState>(val commonState: CommonState, val featureState: S?) {
+    data class MobbleState<S : FeatureState>(val commonState: CommonState, val featureState: S?) :
+        Serializable {
 
         fun withLoading(loading: Loading, abortError: Boolean = true) =
             if (abortError) {
