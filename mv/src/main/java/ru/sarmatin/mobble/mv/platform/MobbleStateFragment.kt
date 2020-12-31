@@ -21,6 +21,8 @@ abstract class MobbleStateFragment<S : FeatureState>(@LayoutRes layout: Int) :
 
     abstract override val viewModel: MobbleStateViewModel<S>
 
+    private var currentStateFeatureState: S? = null
+
     /**
      * Default State observer
      * Override this observer to implement your custom state handling
@@ -32,7 +34,8 @@ abstract class MobbleStateFragment<S : FeatureState>(@LayoutRes layout: Int) :
      */
     protected open val stateObserver: Observer<MobbleStateViewModel.MobbleState<S>> = Observer {
         handleCommonState(it.commonState)
-        handleFeatureState(it.featureState)
+        if (compareFeatureState(it.featureState))
+            handleFeatureState(it.featureState)
     }
 
     protected open fun handleCommonState(commonState: MobbleStateViewModel.CommonState) {
@@ -80,6 +83,14 @@ abstract class MobbleStateFragment<S : FeatureState>(@LayoutRes layout: Int) :
             }
 
         }
+    }
+
+    private fun compareFeatureState(newFeatureState: S?): Boolean {
+        return if (currentStateFeatureState != newFeatureState) {
+            currentStateFeatureState = newFeatureState
+            true
+        } else
+            false
     }
 
     override fun onResume() {
