@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
 import ru.sarmatin.mobble.mv.common.loading.Loading
 import ru.sarmatin.mobble.mv.common.loading.dialog.AbstractLoadingDialog
 import ru.sarmatin.mobble.mv.common.loading.dialog.DefaultSpinnerLoadingDialog
 import ru.sarmatin.mobble.mv.navigation.NavAction
+import ru.sarmatin.mobble.utils.consumablelivedata.ConsumableObserver
 
 /**
  * Created by antonsarmatin
@@ -29,7 +29,7 @@ abstract class MobbleAbstractFragment(@LayoutRes layout: Int) : Fragment(layout)
      * Navigation Event Observer
      * @see MobbleAbstractFragment.handleNavigationEvent
      */
-    protected val navigationObserver: Observer<NavAction> = Observer {
+    protected val navigationObserver: ConsumableObserver<NavAction> = ConsumableObserver {
         handleNavigationEvent(it)
     }
 

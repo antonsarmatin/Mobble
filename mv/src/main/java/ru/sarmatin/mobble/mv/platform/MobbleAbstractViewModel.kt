@@ -3,9 +3,9 @@ package ru.sarmatin.mobble.mv.platform
 import androidx.lifecycle.ViewModel
 import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
 import ru.sarmatin.mobble.mv.common.loading.Loading
-import ru.sarmatin.mobble.mv.navigation.MutableNavigationEvent
 import ru.sarmatin.mobble.mv.navigation.NavAction
-import ru.sarmatin.mobble.mv.navigation.NavigationEvent
+import ru.sarmatin.mobble.utils.consumablelivedata.ConsumableLiveData
+import ru.sarmatin.mobble.utils.consumablelivedata.setConsumableValue
 import ru.sarmatin.mobble.utils.failure.Failure
 
 /**
@@ -29,8 +29,9 @@ abstract class MobbleAbstractViewModel : ViewModel() {
      * @see MobbleAbstractFragment.handleNavigationEvent
      * @see NavAction
      */
-    private val _navigationEvent = MutableNavigationEvent()
-    val navigationEvent: NavigationEvent
+    //TODO ConsumableNavEvent?
+    private val _navigationEvent = ConsumableLiveData<NavAction>()
+    val navigationEvent: ConsumableLiveData<NavAction>
         get() = _navigationEvent
 
     /**
@@ -58,7 +59,7 @@ abstract class MobbleAbstractViewModel : ViewModel() {
     protected abstract fun handleFailure(failure: Failure, abortLoading: Boolean = true)
 
     protected fun handleNavigation(navAction: NavAction) {
-        _navigationEvent.value = navAction
+        _navigationEvent.setConsumableValue(navAction)
     }
 
 }

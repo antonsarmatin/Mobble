@@ -9,11 +9,11 @@ import androidx.lifecycle.MutableLiveData
  */
 open class ConsumableLiveData<T> : MutableLiveData<ConsumableValue<T>>()
 
-fun <T> ConsumableLiveData<T>.setValue(value: T) {
+fun <T> ConsumableLiveData<T>.setConsumableValue(value: T) {
     this.value = ConsumableValue(value)
 }
 
-fun <T> ConsumableLiveData<T>.postValue(value: T) {
+fun <T> ConsumableLiveData<T>.postConsumableValue(value: T) {
     this.postValue(
         ConsumableValue(
             value
