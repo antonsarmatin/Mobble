@@ -17,20 +17,11 @@ import java.io.Serializable
  */
 
 @Suppress("NAME_SHADOWING")
-abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) :
+abstract class MobbleStateViewModel<S : FeatureState>(
+    handle: SavedStateHandle,
+    defaultFeatureState: S? = null
+) :
     MobbleAbstractViewModel() {
-
-    /**
-     * State LiveData field
-     * @see MobbleState
-     */
-    private val _viewState = MutableLiveData<MobbleState<S>>()
-    val viewState: LiveData<MobbleState<S>>
-        get() = _viewState
-
-    fun getState() = _viewState.value
-    fun getCommonState() = _viewState.value?.commonState
-    fun getFeatureState() = _viewState.value?.featureState
 
     /**
      * Default common VM state
@@ -38,16 +29,18 @@ abstract class MobbleStateViewModel<S : FeatureState>(handle: SavedStateHandle) 
     protected val defaultCommonState = CommonState(Loading.NoLoading, null)
 
     /**
-     * Default feature VM state
+     * State LiveData field
+     * @see MobbleState
      */
-    abstract val defaultFeatureState: S
+    private val _viewState =
+        MutableLiveData<MobbleState<S>>(MobbleState(defaultCommonState, defaultFeatureState))
+    val viewState: LiveData<MobbleState<S>>
+        get() = _viewState
 
-    /**
-     * Init with default state
-     */
-    init {
-        _viewState.value = MobbleState(defaultCommonState, defaultFeatureState)
-    }
+    fun getState() = _viewState.value
+    fun getCommonState() = _viewState.value?.commonState
+    fun getFeatureState() = _viewState.value?.featureState
+
 
     /**
      * State class for ViewModel
