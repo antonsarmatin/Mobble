@@ -132,6 +132,10 @@ abstract class MobbleStateViewModel<S : FeatureState>(
     protected fun updateFeatureState(state: S?, abortError: Boolean = false) {
         if (state is NavAction) {
             handleNavigation(state)
+            if (abortError) {
+                val abortedFailureState = _viewState.value?.withFailure(null)
+                _viewState.value = abortedFailureState
+            }
             return
         }
 
@@ -143,5 +147,6 @@ abstract class MobbleStateViewModel<S : FeatureState>(
         }
         _viewState.value = newState
     }
+
 
 }
