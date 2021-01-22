@@ -12,14 +12,17 @@ sealed class Failure {
 
     object NetworkConnection : Failure()
 
-    object ServerError : Failure()
+    data class ServerError(
+        val errorMessage: String = "Unknown Error",
+        val statusCode: Int = 0
+    ) : Failure()
 
     /** * Extend this class for feature specific failures.*/
-    abstract class FeatureFailure: Failure()
+    abstract class FeatureFailure : Failure()
 
     /** * This failure may be ignored.*/
-    object Ignore: Failure()
+    object Ignore : Failure()
 
     /** Stub */
-    object NoFailure: Failure()
+    object NoFailure : Failure()
 }
