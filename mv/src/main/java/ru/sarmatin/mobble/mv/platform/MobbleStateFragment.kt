@@ -1,5 +1,7 @@
 package ru.sarmatin.mobble.mv.platform
 
+import android.os.Bundle
+import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
 import ru.sarmatin.mobble.mv.common.loading.DefaultFullscreen
@@ -23,6 +25,8 @@ abstract class MobbleStateFragment<S : FeatureState>(@LayoutRes layout: Int) :
 
     private var currentStateFeatureState: S? = null
 
+    private var restoreStateAfterPause = false
+
     /**
      * Default State observer
      * Override this observer to implement your custom state handling
@@ -36,6 +40,10 @@ abstract class MobbleStateFragment<S : FeatureState>(@LayoutRes layout: Int) :
         handleCommonState(it.commonState)
         if (compareFeatureState(it.featureState))
             handleFeatureState(it.featureState)
+        else if (restoreStateAfterPause) {
+            handleFeatureState(it.featureState)
+            restoreStateAfterPause = false
+        }
     }
 
     protected open fun handleCommonState(commonState: MobbleStateViewModel.CommonState) {
@@ -93,15 +101,21 @@ abstract class MobbleStateFragment<S : FeatureState>(@LayoutRes layout: Int) :
             false
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.viewState.observe(viewLifecycleOwner, stateObserver)
+    }
+
     override fun onResume() {
         super.onResume()
-        viewModel.viewState.observe(viewLifecycleOwner, stateObserver)
+//        viewModel.viewState.observe(viewLifecycleOwner, stateObserver)
         viewModel.navigationEvent.observe(viewLifecycleOwner, navigationObserver)
     }
 
     override fun onPause() {
-        viewModel.viewState.removeObserver(stateObserver)
+//        viewModel.viewState.removeObserver(stateObserver)
         viewModel.navigationEvent.removeObserver(navigationObserver)
+        restoreStateAfterPause = true
         super.onPause()
     }
 
